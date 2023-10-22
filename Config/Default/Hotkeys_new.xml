@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="2">
+    <hotkey type="1" action="0" key="50" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="0" action="1" key="50" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;can_be_looped&quot;: 0,&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;Tailoring+Hide&quot;&#10;}&#10;"/>
+</data>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="Tailoring+Hide" looped="true" delay="6">
+        <action type="5" convert_type="0" waiting_time="1000" value="21"/>
+        <action type="1000" convert_type="0" waiting_time="100"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x40223B6C" graphic="0x0F9D" color="0x0000"/>
+        <action type="3" convert_type="1" waiting_time="1000" serial="0x40570027" graphic="0x1067" color="0x0000"/>
+        <action type="14" convert_type="0" waiting_time="1000" name="Leather" item_name="Leather Armour" graphic="0x13CC" color="0x0000"/>
+        <action type="14" convert_type="0" waiting_time="1000" name="Leather Armour" item_name="leather cap (2 cut up leather)" graphic="0x1DB9" color="0x0000"/>
+    </macro>
+    <macro name="Cooking" looped="true" delay="3">
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x4021A64E" graphic="0x09F1" color="0x0000"/>
+        <action type="3" convert_type="4" waiting_time="1000" serial="0x40219089" graphic="0x0DE3" color="0x0000"/>
+    </macro>
+    <macro name="mINING" looped="true" delay="5.7">
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x40435F67" graphic="0x0E85" color="0x0000"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x402208C4" graphic="0x0E85" color="0x0000"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x00000000" graphic="0x0000" color="0x0000"/>
+        <action type="3" convert_type="9" waiting_time="1000" serial="0x004143D5" graphic="0x0190" color="0x8406"/>
+    </macro>
+    <macro name="Mining_1" looped="true" delay="1">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40435F67" graphic="0x0E85" color="0x0000"/>
+        <action type="4" convert_type="5" waiting_time="1000" graphic="0x0000" x="5822" y="628" z="25" relative_x="-1" relative_y="1" relative_z="25"/>
+        <action type="1000" convert_type="0" waiting_time="5800"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40435F67" graphic="0x0E85" color="0x0000"/>
+        <action type="4" convert_type="5" waiting_time="1000" graphic="0x0000" x="5822" y="627" z="25" relative_x="-1" relative_y="0" relative_z="25"/>
+        <action type="1000" convert_type="0" waiting_time="5800"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40435F67" graphic="0x0E85" color="0x0000"/>
+        <action type="4" convert_type="5" waiting_time="1000" graphic="0x0000" x="5822" y="626" z="25" relative_x="-1" relative_y="-1" relative_z="25"/>
+        <action type="1000" convert_type="0" waiting_time="5800"/>
+    </macro>
+    <macro name="TESTMACRo" looped="false" delay="1">
+        <action type="20" convert_type="0" waiting_time="1000" value="-135"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="135"/>
+    </macro>
+    <macro name="Stealing" looped="true" delay="3">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40577FC1" graphic="0x0E75" color="0x0000"/>
+        <action type="1000" convert_type="0" waiting_time="3000"/>
+        <action type="5" convert_type="0" waiting_time="1000" value="33"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x402BDE7C" graphic="0x0E76" color="0x0000"/>
+    </macro>
+    <macro name="V Meshok po 1" looped="true" delay="1">
+        <action type="10" convert_type="1" waiting_time="300" serial="0x403D0484" graphic="0x1BDD" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="74" y="89" z="0" slot="255" container="0x402BDE7C" relative_x="16" relative_y="28" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x40089D79" graphic="0x09B7" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="68" y="62" z="0" slot="255" container="0x402BDE7C" relative_x="10" relative_y="1" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x404ED39B" graphic="0x0EED" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="49" y="83" z="0" slot="255" container="0x402BDE7C" relative_x="-9" relative_y="22" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x404E3B5F" graphic="0x0F84" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="43" y="99" z="0" slot="255" container="0x402BDE7C" relative_x="-15" relative_y="38" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x40577A17" graphic="0x09D0" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="93" y="77" z="0" slot="255" container="0x402BDE7C" relative_x="35" relative_y="16" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x40171FDB" graphic="0x0E1D" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="35" y="54" z="0" slot="255" container="0x402BDE7C" relative_x="-23" relative_y="-7" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x4008A2B4" graphic="0x0F85" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="29" y="72" z="0" slot="255" container="0x402BDE7C" relative_x="-29" relative_y="11" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x40577A15" graphic="0x0994" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="63" y="98" z="0" slot="255" container="0x402BDE7C" relative_x="5" relative_y="37" relative_z="0"/>
+    </macro>
+    <macro name="Lumber" looped="true" delay="3">
+        <action type="5" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="3" convert_type="9" waiting_time="1000" serial="0x00577FCB" graphic="0x0191" color="0x83FA"/>
+    </macro>
+    <macro name="Tame" looped="true" delay="8">
+        <action type="9" convert_type="0" waiting_time="1000" value="panther release"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40530170" graphic="0x13F9" color="0x07D5"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x003DBCE0" graphic="0x00D6" color="0x0901"/>
+    </macro>
+    <macro name="Blacksmith" looped="true" delay="10">
+        <action type="10" convert_type="2" waiting_time="300" serial="0x402C1B6E" graphic="0x1BEF" color="0x0000" count="84"/>
+        <action type="11" convert_type="0" waiting_time="500" x="110" y="122" z="0" slot="255" container="0x4041434F" relative_x="-120" relative_y="62" relative_z="0"/>
+    </macro>
+    <macro name="magery" looped="true" delay="4">
+        <action type="5" convert_type="0" waiting_time="1000" value="32"/>
+    </macro>
+</data>

@@ -1,0 +1,19 @@
+function stealing2()
+{
+while(1){
+	Orion.UseObject('0x40577FC1');
+	Orion.Wait(2500);
+	Orion.UseObject('0x402BDE7C');
+	Orion.Wait(2500);
+	for(i=0;i<16;i++)
+	steal();
+}}
+
+
+
+function steal(){
+	Orion.UseSkill('33');
+	if (Orion.WaitForTarget(2000))
+		Orion.WaitTargetType('0xFFFF', '0xFFFF', '0x40577FC1');//0x40577FC1
+	Orion.Wait(3300);
+}

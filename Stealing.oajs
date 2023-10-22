@@ -1,0 +1,39 @@
+function GeneratedScript_173308()
+{
+while(1){
+	Orion.UseObject('0x40577FC1');
+	Orion.Wait(5000);
+	steal('0x0F85');
+
+	
+	steal('0x1BDD');
+	steal('0x09B7');
+	
+		steal('0x1BDD');
+	
+		steal('0x09D0');
+	
+		steal('0x0F84');
+	
+		steal('0x0994');
+		steal('0x0E1D');
+	
+		steal('0x0EED');
+	
+	steal(	'0x0DE1');
+	
+	steal(	'0x0DE1');
+	
+		steal('0x0DE1');
+	
+	steal(	'0x13F8');
+}}
+
+
+
+function steal(type){
+	Orion.UseSkill('33');
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetType(type);
+	Orion.Wait(3000);
+}

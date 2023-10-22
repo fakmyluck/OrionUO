@@ -1,0 +1,30 @@
+function GeneratedScript_191433()
+{
+while(1){
+
+
+
+	if(Orion.Step(1, false));
+	Orion.Wait(415);
+	if(!Player.Hidden());
+	Hid();
+	if(Orion.Step(1, false));
+	Orion.Wait(415);
+	
+	if(Orion.Step(5, false));
+	Orion.Wait(415);
+	if(!Player.Hidden());
+	Hid();
+	if(Orion.Step(5, false));
+	Orion.Wait(415);
+	
+}}
+
+function Hid(){
+	if(!Player.Hidden()){
+		Orion.WarMode(1);
+		Orion.WarMode(0);
+		Orion.UseSkill('Hiding');
+		Orion.Wait(3000);
+	}
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" show_shopping_progress_bar="true" max_shop_items="0" max_sell_price="0" shop_delay="440" shop_timeout="10" buy_command="buy" sell_command="sell">
+    <shoplist name="Sell Hats &amp; ham">
+        <shopitem enabled="true" graphic="0x1DB9" color="0x0000" name="leather cap" count="0" price="0" comment=""/>
+        <shopitem enabled="true" graphic="0x09F2" color="0x0000" name="cuts of ribs" count="0" price="0" comment=""/>
+        <shopitem enabled="true" graphic="0x0F51" color="0x0000" name="dagger" count="0" price="0" comment=""/>
+    </shoplist>
+    <shoplist name="Reg for Training">
+        <shopitem enabled="true" graphic="0x0F8D" color="0x0000" name="Spider's Silk" count="170" price="4" comment=""/>
+        <shopitem enabled="true" graphic="0x0F7B" color="0x0000" name="Blood Moss" count="170" price="4" comment=""/>
+        <shopitem enabled="true" graphic="0x0F86" color="0x0000" name="Mandrake Roots" count="170" price="4" comment=""/>
+        <shopitem enabled="true" graphic="0x0F88" color="0x0000" name="Nightshade" count="170" price="4" comment=""/>
+    </shoplist>
+</data>
