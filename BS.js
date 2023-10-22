@@ -20,7 +20,7 @@ Orion.Print(men);
 var spell='agility';
 function Magery(){
 		
-		while(Player.Mana()>55){//>15
+		while(Player.Mana()>15){//>15
 		if(spell=='agility')
 			spell='harm';
 		else
@@ -43,7 +43,7 @@ function BS()
 	var counter=0;
 Orion.Print(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()+' Iron');
 while(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()>2){
-	Orion.UseObject('0x40561441');		//molotok
+	Orion.UseType('0x13E3', '0xFFFF');		//molotok
 	Orion.Wait(300);
 	if (Orion.WaitForTarget(1000))
 		Orion.TargetType('0x1BEF', '0x0000');	//IRON ignot
@@ -87,7 +87,7 @@ while(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()>2){
                   Orion.WaitJournal('You have failed || You put', Orion.Now()+2000, Orion.Now()+8050);
 				  Magery();
 
-				  if(counter%12==0){
+				  if(counter%6==0){
 					Orion.Print('Magery '+(Orion.SkillValue('magery')-skillvalue_magery));
 					Orion.Print('Blacksmithy '+(Orion.SkillValue('blacksmithy')-skillvalue_blacksmithy));
 					Orion.Print('Meditation '+(Orion.SkillValue('meditation')-skillvalue_meditation));
@@ -100,7 +100,7 @@ while(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()>2){
 while(1)
 Magery();
 
-if(counter%12==0){
+if(counter%6==0){
 	Orion.Print('  Magery'+(Orion.SkillValue('magery')-skillvalue_magery));
 	Orion.Print('  Blacksmithy'+(Orion.SkillValue('blacksmithy')-skillvalue_blacksmithy));
 	Orion.Print('  Meditation'+(Orion.SkillValue('meditation')-skillvalue_meditation));
