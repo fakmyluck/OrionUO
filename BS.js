@@ -19,7 +19,7 @@ Orion.Print(men);
 
 //var spell='agility';
 function Magery(){
-		while(Player.Mana()>15){//>15
+		while(Player.Mana()>33){//>15
 	
 		Orion.Cast('poison');
 		if (Orion.WaitForTarget(1000))
@@ -84,6 +84,7 @@ Orion.UseType('0x1BEF', '0x0000');
    //                 else
    			
                   Orion.WaitJournal('You have failed || You put', Orion.Now()+2000, Orion.Now()+8050);
+				  if(Player.Mana()==100)
 				  Magery();
 
 				  if(counter%6==0){
