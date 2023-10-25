@@ -17,15 +17,11 @@ Orion.Print(men);
 			Orion.Print(men.ItemName(i));
 }
 
-var spell='agility';
+//var spell='agility';
 function Magery(){
-		
 		while(Player.Mana()>15){//>15
-		if(spell=='agility')
-			spell='harm';
-		else
-			spell='agility';
-		Orion.Cast(spell);
+	
+		Orion.Cast('poison');
 		if (Orion.WaitForTarget(1000))
 			Orion.TargetObject('self');
 		Orion.Wait(3000);
@@ -40,14 +36,17 @@ function Magery(){
 	
 function BS()
 {
+Orion.UseType('0x13E3', '0xFFFF');
+if(Orion.WaitForTarget(1000))
+Orion.CancelTarget();
 	var counter=0;
 Orion.Print(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()+' Iron');
 while(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()>2){
-	Orion.UseType('0x13E3', '0xFFFF');		//molotok
-	Orion.Wait(300);
-	if (Orion.WaitForTarget(1000))
-		Orion.TargetType('0x1BEF', '0x0000');	//IRON ignot
-
+	//Orion.UseType('0x13E3', '0xFFFF');		//molotok
+	//Orion.Wait(300);
+	//if (Orion.WaitForTarget(1000))
+	//	Orion.TargetType('0x1BEF', '0x0000');	//IRON ignot
+Orion.UseType('0x1BEF', '0x0000');
 	//Zhjdem menu BS
 	if (Orion.WaitForMenu(1000))
 	{
