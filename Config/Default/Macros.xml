@@ -62,13 +62,13 @@
         <action type="3" convert_type="9" waiting_time="1000" serial="0x00577FCB" graphic="0x0191" color="0x83FA"/>
     </macro>
     <macro name="Tame" looped="true" delay="8">
-        <action type="9" convert_type="0" waiting_time="1000" value="black bear release"/>
+        <action type="9" convert_type="0" waiting_time="1000" value="wolf release"/>
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40530170" graphic="0x13F9" color="0x07D5"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x0055D8B3" graphic="0x00D3" color="0x0901"/>
+        <action type="3" convert_type="11" waiting_time="1000" serial="0x00192321" graphic="0x00D6" color="0x0901"/>
+        <action type="1000" convert_type="0" waiting_time="3000"/>
     </macro>
     <macro name="Blacksmith" looped="true" delay="10">
-        <action type="10" convert_type="2" waiting_time="300" serial="0x402C1B6E" graphic="0x1BEF" color="0x0000" count="84"/>
-        <action type="11" convert_type="0" waiting_time="500" x="110" y="122" z="0" slot="255" container="0x4041434F" relative_x="-120" relative_y="62" relative_z="0"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x4056439F" graphic="0x13E3" color="0x0000"/>
     </macro>
     <macro name="magery" looped="true" delay="4">
         <action type="5" convert_type="0" waiting_time="1000" value="32"/>

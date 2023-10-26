@@ -1,18 +1,11 @@
-function
+Resend
+SetBadLocation
+WaitForTarget
+Orion
+CancelTarget
+Weight
+MaxWeight
 else
-harmtarget
-UseSkill
-Wait
-ButtonList
-X
-Step
-Direction
-NextMessage
-PrevMessage
-Hidden
-UseAbility
-Hide
-TextWindow
 AbilityStatus
 Abyss
 Acquire
@@ -83,6 +76,7 @@ BuffDescription
 BuffExists
 BuffTimeRemaining
 BuffsCount
+ButtonList
 Buy
 BuyCurrent
 BuyHook
@@ -92,7 +86,6 @@ BuyRestockHook
 CanChangeName
 CanWalk
 CancelContextMenu
-CancelTarget
 CancelWaitGump
 CancelWaitMenu
 CancelWaitPrompt
@@ -156,6 +149,7 @@ Date
 Dead
 Desciption
 Dex
+Direction
 Disarm
 DisplayTimerExists
 DisplayTimerGetTime
@@ -279,6 +273,8 @@ HaveCancel
 HaveTarget
 Height
 HelpGump
+Hidden
+Hide
 HighlightAreaTimer
 Hits
 HttpGet
@@ -364,7 +360,6 @@ MaxMana
 MaxStam
 MaxTextLength
 MaxValue
-MaxWeight
 MenuCount
 MinDamage
 MinMaxButton
@@ -382,6 +377,7 @@ MovePaperdoll
 Name
 NameColor
 NewFile
+NextMessage
 Notoriety
 Now
 OAOptionGet
@@ -397,7 +393,6 @@ OpenEnhancedMap
 OpenPaperdoll
 Opened
 OptionFastRotation
-Orion
 Paralyzed
 PartyMembers
 PauseScript
@@ -407,6 +402,7 @@ PlayWav
 Player
 PoisonResistance
 Poisoned
+PrevMessage
 Price
 Print
 PrintFast
@@ -450,7 +446,6 @@ ReplyID
 ReplyText
 RequestContextMenu
 RequestName
-Resend
 ResetIgnoreList
 ResetName
 ResetSearchArea
@@ -489,7 +484,6 @@ Serial
 SerialToEuo
 SetAllowedSoundsArea
 SetArm
-SetBadLocation
 SetCallback
 SetCatchBag
 SetCharactersFontColor
@@ -556,6 +550,7 @@ Stam
 StatStatus
 StatsCap
 StealthSteps
+Step
 StepsCount
 StopMacro
 StopSailOnBoat
@@ -576,6 +571,7 @@ TestItemColor
 Text
 TextDialogCount
 TextList
+TextWindow
 Texts
 TextureId
 TilepicList
@@ -611,11 +607,13 @@ UpdateFindList
 UpdateIgnoreList
 UpdateShopList
 Use
+UseAbility
 UseFromGround
 UseFromGroundList
 UseIgnoreList
 UseItemOnMobile
 UseObject
+UseSkill
 UseSkillTarget
 UseType
 UseTypeList
@@ -624,6 +622,7 @@ UseWrestlingStun
 ValidateTargetTile
 ValidateTargetTileRelative
 Value
+Wait
 WaitContextMenu
 WaitContextMenuCliloc
 WaitContextMenuID
@@ -635,7 +634,6 @@ WaitForGump
 WaitForMenu
 WaitForPrompt
 WaitForShop
-WaitForTarget
 WaitForTextDialog
 WaitForTrade
 WaitGump
@@ -654,9 +652,9 @@ WaitWhileTargeting
 WalkTo
 WarMode
 Weather
-Weight
 Write
 WriteLine
+X
 XYToSextant
 Y
 YellowHits
@@ -672,7 +670,9 @@ dressbag
 false
 for
 forEach
+function
 ground
+harmtarget
 helptarget
 if
 lastattack

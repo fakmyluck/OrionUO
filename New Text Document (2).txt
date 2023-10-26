@@ -1,30 +1,13 @@
-function GeneratedScript_191433()
-{
-while(1){
+//var mesg=Orion.LastJournalMessage();
+//Orion.Print('_'+mesg.Text()+'_');
+Orion.Print('X: '+Player.X());
+Orion.Print('Y: '+Player.Y());
+//Orion.Print(Player.Z());
 
+Orion.Print(Orion.ValidateTargetTileRelative('mine',4204, 608));
 
+//Orion.Resend();
+//Orion.Print(Player.MaxWeight());
+//Orion.Print(Player.Weight());
 
-	if(Orion.Step(1, false));
-	Orion.Wait(415);
-	if(!Player.Hidden());
-	Hid();
-	if(Orion.Step(1, false));
-	Orion.Wait(415);
-	
-	if(Orion.Step(5, false));
-	Orion.Wait(415);
-	if(!Player.Hidden());
-	Hid();
-	if(Orion.Step(5, false));
-	Orion.Wait(415);
-	
-}}
-
-function Hid(){
-	if(!Player.Hidden()){
-		Orion.WarMode(1);
-		Orion.WarMode(0);
-		Orion.UseSkill('Hiding');
-		Orion.Wait(3000);
-	}
-}
+//Orion.Print(Player.Weight()/Player.MaxWeight());

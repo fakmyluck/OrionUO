@@ -20,6 +20,23 @@ function Cwalk(Direction){  //no arg = Player.Direction
     return Orion.CanWalk(Direction,Player.X(),Player.Y(),Player.Z());
 }
 
+function gotomines(){
+	var co=[
+    [2547,2547,  2553,   2566,    2580,   2581,   2581,   2558,    2520],
+    [831	,795,   766,    737,    695,    665,    633,    599,    558]];
+	 var coMinnoc=Math.abs(Player.X()-co[0][co[0].length-1])+Math.abs(Player.Y()-co[1][co[1].length-1]);
+	 var coMines=Math.abs(Player.X()-co[0][0])+Math.abs(Player.Y()-co[1][0]);
+ 
+	if(coMines<coMinnoc)
+        for(i=2;i<=co[0].length-1;i++)	// SHAHTA -> minoc
+	        Orion.Print(Orion.WalkTo(co[0][i],  co[1][i]));
+	else
+	    for(i=co[0].length-3;i>=0;i--)  // MINNOC -> shahta
+	        Orion.Print(Orion.WalkTo(co[0][i],  co[1][i]));
+	
+	Orion.Turn(4);
+}
+
 function Hid(){
 	if(!Player.Hidden()){
 		Orion.WarMode(1);
@@ -29,15 +46,11 @@ function Hid(){
 	}
 }
 
-var spell='agility';
 function Magery(){
-  
-    while(Player.Mana()>15){//>15
-        if(spell=='agility')
-            spell='harm';
-        else
-            spell='agility';
-        Orion.Cast(spell);
+//return
+    while(Player.Mana()>30){//>15
+   
+        Orion.Cast('poison');
         if (Orion.WaitForTarget(1000))
             Orion.TargetObject('self');
         Orion.Wait(3000);
@@ -57,11 +70,13 @@ function Mining()
     var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-        if(Player.Mana()>75)
-        Magery();
-            if(Orion.ValidateTargetTile('mine',X+x, Y+y,Z)){
+      //  if(Player.Mana()==100)
+      //  Magery();
+         Orion.Print(Orion.ValidateTargetTile('mine',X+x, Y+y));
+            if(Orion.ValidateTargetTile('mine',X+x, Y+y)){
+        
                 Orion.SetTrack(true, X+x*2, Y+y*2);
-                for(i=0;i<66;i++){
+                for(ii=0;ii<66;ii++){
                     Hid();
                     Orion.UseType('0x0E85', '0xFFFF');
                     //Orion.UseObject('0x40435F67');  // /\USE TYPE/\
@@ -180,7 +195,7 @@ function main(){
             say('Poka nemozhet idti v storonu Pdir[uspeshno]')
         }
         Walk(Pdir);
-        if(Player.Mana()>73){
+        if(Player.Mana()==100){
         	Magery();
         }
         // if(Cwalk((Player.Direction()-2<<29>>>29))) //32 64
