@@ -1,10 +1,8 @@
 var exit=false;
-var Pdir=Player.Direction();
-const run=true;
-const walk=false;
 var walkdelay=450;
 var debw=3000;
 var tmp=false;
+var PrevLeft=false;
 //var Compas=['NE','E','SE','S','SW','W','NW']
 var TrnL=function(){return (Rpid-2>>>0)%8};
 var TrnR=function(){return (Rpid+2>>>0)%8};
@@ -29,22 +27,21 @@ function Hid(){
 	}
 }
 
-var spell='agility';
 function Magery(){
   
-    while(Player.Mana()>15){//>15
-        if(spell=='agility')
-            spell='harm';
-        else
-            spell='agility';
-        Orion.Cast(spell);
+    while(Player.Mana()>25){//>15
+        
+        Orion.Cast('poison');
         if (Orion.WaitForTarget(1000))
             Orion.TargetObject('self');
         Orion.Wait(3000);
     }
 
-    Orion.UseSkill('meditation');
-    Orion.Wait(2500);    
+    for(i=0;i<12;i++){  //Esli meditatsiya spadaet =-> ubrat'
+        Orion.UseSkill('meditation');
+        if(!Orion.WaitJournal('You are at peace || You lose', Orion.Now()+1000, Orion.Now()+3050))
+            return	
+    }	
 }
 	
 
@@ -57,58 +54,43 @@ function Mining()
     var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-        if(Player.Mana()>75)
-        Magery();
+            if(Player.Mana()==100)
+                Magery();
             if(Orion.ValidateTargetTile('mine',X+x, Y+y,Z)){
                 Orion.SetTrack(true, X+x*2, Y+y*2);
                 for(i=0;i<66;i++){
                     Hid();
                     Orion.UseType('0x0E85', '0xFFFF');
-                    //Orion.UseObject('0x40435F67');  // /\USE TYPE/\
                     if (Orion.WaitForTarget(1000))
                         Orion.TargetTileRelative('mine', x, y,Z);
                         
-                    if(Orion.WaitJournal('There is no ore', Orion.Now(), Orion.Now()+500))
+                    if(Orion.WaitJournal('There is no ore', Orion.Now(), Orion.Now()+1000))
                         break;  //NADEJUS' VQBJET IZ for cikla
                     else
                         Orion.WaitJournal('You loosen || You put', Orion.Now(), Orion.Now()+6050);//Orion.Wait(5800);  
                 }
+                Orion.Wait(30);
             }
         }
     }	
 }
-//function Turn(Direction){   //no arg +=2
-    // if(Direction==null)
-    //         Direction=(Player.Direction()+2)%8;
-    // if(Direction==Player.Direction())
-    //  return;
-    // while(Direction!=Player.Direction()){
-    //     Orion.Turn(Direction);
-    //         Orion.Wait(60);
-    //         if(Direction!=Player.Direction()){
-    //             say('Turn FAILED!')
-    //             say('Player.Direction='+Player.Direction()+' ('+Compas[Player.Direction()%8>>>0]+')');
-    //             say('Pdir='+Pdir+' ('+Compas[Pdir]+')');
-    //         }
-    // }
-   // return;
-//}
 
-function Walk(Direction){
-    var moved = Orion.Step(Direction,walk);
-    Orion.Wait(440); //~440wlk  //~215rn
-    if(!moved)
+function Walk(Direction,run){
+    PrevLeft=Cwalk(Direction-2<<29>>>29);
+    var speed=220;
+    if(!run){
+        run=false;
+        speed=450;
+    }
+    prevC=Player.X()+Player.Y();
+    var moved = Orion.Step(Direction,run);
+    Orion.Wait(speed); //~440wlk  //~215rn
+    if(!moved)      // HEDNYA KAKAJATA A NE BOOOL
         say("Шаг неудачен") //Ubrat'
+    if(prevC==Player.X()+Player.Y())
+        say("STOIM PERDIM") /// ZACIKLIT'!?!?!?!??!?!?!
     return moved;
-}
-    
-    
-    		//PRAVELN'no JA ZAPUTALSA EPT
-        //         7               		-1                 -1      
-    //      6  |  0         		 0    -1           -1     0         
-    //    5----+----1      1    Y   -1       -1    X    1        
-    //      4  |  2          1     0            0     1         
-    //         3                1                  1      
+}  
 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
@@ -117,44 +99,32 @@ function Walk(Direction){
     //         3                1                  1      
     // var xx=[-1,-1,0,1,1,1,0,-1]; /// NE{RTAVO:NP}
     // var yy=[0,1,1,1,0,-1,-1,-1]; //NEVERMNo
-    // switch(x) {
-    //     case (7||0||1):
-    //         ///dsda
-    //       break;
-    //     case y: 
-    //   }
 
 function main(){
-    var minus2=(-4>>>0)%8;
-    say('DEBUG: ' + minus2); 
-   // while(!exit){
-
-        Pdir=Player.Direction();
+    var Pdir=Player.Direction();
        // Orion.SetTrack(true, x[Pdir], y[Pdir]);
-
 
 // void Orion.Resend();
 // Synchronisation with the server. Can be used every few seconds.
 
-
     while( Cwalk(Pdir) ){
-        say("<:"+Cwalk(Pdir-1)+'\t'+Cwalk(Pdir+1)+':>');
+        say("<:"+Cwalk(Pdir-1)+'  '+Cwalk(Pdir+1)+':>');
         if(Pdir%2==1&&!(Cwalk(Pdir-1)*Cwalk(Pdir+1))){   
             Pdir=(Pdir+1)%8;    //<<29>>>29;    
             //Orion.Track(true, x[Pdir], y[Pdir]);          
             
-            if(Cwalk(Pdir)){                                //    X
-            say('.МОГУ. пойти ваерёд после нармализации');  //  ==>-->
-            Walk(Pdir)                                      //          Break;
+            if(Cwalk(Pdir)){                                    //    X
+                say('.МОГУ. пойти ваерёд после нармализации');  //  ==>-->
+                Walk(Pdir,true);                                      //          Break;
             }
-            else{                                           //     x
-                say('.НЕ МОГУ. пойти ваерёд')               //  ==>X
-                Pdir+=2;    
-                //Orion.Track(true, x[Pdir], y[Pdir]);                                //    |x
+            else{                                            //     x
+                say('.НЕ МОГУ. пойти ваерёд');               //  ==>X
+                Pdir+=2;                                     //    |x
+                //Orion.Track(true, x[Pdir], y[Pdir]);      //    
             }                                               //          Break;
             break;
         }else{                                              //   x
-            Walk(Pdir);                                     //  ==>-->-....-X
+            Walk(Pdir,true);                                     //  ==>-->-....-X
         }                                                   //  x   x
     }
     
@@ -168,7 +138,12 @@ function main(){
         //Orion.Track(true, x[Pdir], y[Pdir]);
         if(Cwalk(PdirLft)){   //Proverka esli sleva pustoy tile
             Pdir=PdirLft;
-            //Orion.Track(true, x[Pdir], y[Pdir]);
+            if(!PrevLeft)
+                while(1){
+                    Hid();
+                    wait(6000);
+                    say('USHOL KUDATO NETUDA');
+                }
             Walk(Pdir);
             say('Proverka esli sleva pustoy tile[uspeshno]')
         }
@@ -180,25 +155,8 @@ function main(){
             say('Poka nemozhet idti v storonu Pdir[uspeshno]')
         }
         Walk(Pdir);
-        if(Player.Mana()>73){
-        	Magery();
+        if(Player.Mana()==100){
+        	Magery();       // Zamenit' na zapusk otdel'nogo scripta
         }
-        // if(Cwalk((Player.Direction()-2<<29>>>29))) //32 64
-
-        // while(!Cwalk()){        //Cwalk "VPERED"
-        //     say('V etu storonu ne proiti.')
-        //     Orion.Wait(debw);
-        //     Pdir=Pdir+2<<29>>>29;
-
-        // if(!Orion.Step(Pdir,run)){
-        //     Orion.Print('red','ERROR NE POLUCIlos PROITI');
-        // }else{
-        //     say('Uspeshniy shag');
-        // }
-        // Orion.Wait(walkdelay);
-        // }
     }   
-    
-
 }
-//} //Perviy While(Exit)
