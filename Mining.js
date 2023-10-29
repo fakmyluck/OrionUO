@@ -1,8 +1,5 @@
 /// UDALit'
-Orion.ClearBadLocations();
-Orion.SetBadLocation(4206, 602, -1);
-Orion.SetBadLocation(4205, 602, -1);
-Orion.SetBadLocation(4204, 602, -1);
+
 
 var exit=false;
 var Pdir=Player.Direction();
@@ -27,24 +24,24 @@ function Cwalk(Direction){  //no arg = Player.Direction
 }
 
 function Hid(){
-	if(!Player.Hidden()){
+/*	if(!Player.Hidden()){
 		Orion.WarMode(1);
 		Orion.WarMode(0);
 		Orion.UseSkill('Hiding');
 		Orion.Wait(3000);
-	}
+	}*/
 }
 
 function Magery(){
-    while(Player.Mana()>35){//>15
+ /*   if(Player.Mana()==100){//>15
         Orion.Cast('poison');
         if (Orion.WaitForTarget(1000))
             Orion.TargetObject('self');
-        Orion.Wait(3000);
+        Orion.Wait(2500);
     }
 
     Orion.UseSkill('meditation');
-    Orion.Wait(2500);    
+    //Orion.Wait(2500);    */
 }
 	
 
@@ -57,13 +54,14 @@ function Mining()
     var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-        if(Player.Mana()==100)
+       if(Player.Mana()==100)
         Magery();
             if(Orion.ValidateTargetTileRelative('mine',x, y)||Orion.ValidateTargetTileRelative('mine',x, y,5)){
-                //Orion.SetTrack(true, X+x*2, Y+y*2);
+               																																											 //Orion.SetTrack(true, X+x*2, Y+y*2);
                 for(i=0;i<66;i++){
                     Hid();
-                    Orion.UseType('0x0E85', '0xFFFF');
+                    Orion.UseType('0x0E86', '0xFFFF');
+                    //Orion.UseType('0x0E85', '0xFFFF');
                     
                     if (Orion.WaitForTarget(1000))
                         Orion.TargetTileRelative('mine', x, y,Z);
@@ -79,7 +77,10 @@ function Mining()
 }
 
 function sbrosrudi(){
-	Orion.WalkTo(4223, 638, 0);
+    while(Player.X()!=4224 && Player.Y()!=638 ){
+        Orion.Wait(300);
+	    Orion.WalkTo(4223, 638, 0);
+    }
 	for(i=0;i<15;i++){
 	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
 	if (findItems0[0])
@@ -93,13 +94,22 @@ function sbrosrudi(){
 	Orion.Wait('500');
 	}
 	
-	Orion.WalkTo(4219, 611, 0);
-	return 0;
+	Orion.WalkTo(4208, 606, 0);
+	return 2;
 }
 
+// Orion.ClearBadLocations();
+// Orion.SetBadLocation(4206, 602, -1);
+// Orion.SetBadLocation(4205, 602, -1);
+// Orion.SetBadLocation(4204, 602, -1);
 function Walk(Direction){
-	if(Player.X()<3929)
+ Mining();
+	if(Player.X()<3929) //esli ushol na verh ostrova
 		return sbrosrudi();
+    if((Player.X()==4206||Player.X()==4205||Player.X()==4204)&Player.Y()==602){
+        Orion.WalkTo(4181	,582,0);                  //Esli k ETTINAM ushol
+        Dir=2;
+    }
     var moved = Orion.Step(Direction,walk);
     Orion.Wait(440); //~440wlk  //~215rn
     if(!moved)
@@ -108,7 +118,7 @@ function Walk(Direction){
 }
     
 
-    //         7                 -1                  -1      
+    //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
     //    5----+----1     -1    X     1       1    Y    -1       
     //      4  |  2          0     1            1     0         
@@ -119,12 +129,10 @@ var yy=[-1,-1,0,1,1,1,0,-1]; /// NE{RTAVO:NP}
 
 
 function main(){
-    var minus2=(-4>>>0)%8;
-    say('DEBUG: ' + minus2); 
    // while(!exit){
 
         Pdir=Player.Direction();
-        Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
+       // Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
 
 
 // void Orion.Resend();
@@ -132,7 +140,7 @@ function main(){
 
 
     while( Cwalk(Pdir) ){
-        say("<:"+Cwalk(Pdir-1)+'\t'+Cwalk(Pdir+1)+':>');
+       // say("<:"+Cwalk(Pdir-1)+'\t'+Cwalk(Pdir+1)+':>');
         if(Pdir%2==1&&!(Cwalk(Pdir-1)*Cwalk(Pdir+1))){   
             Pdir=(Pdir+1)%8;    //<<29>>>29;    
             Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);     
@@ -149,22 +157,26 @@ function main(){
             break;
         }else{                                              //   x
             Walk(Pdir);                                     //  ==>-->-....-X
-        }                                                   //  x   x
+            
+        }   
+        Orion.Resend();                                                //  x   x
     }
     
-                    
+    
         say("Nachalo bezkonechnogo cikla");
     while(!exit){   //Kazhdaja iiteracija - noviy koordinat
         
-        Mining();
-        say('[mining complete!]')
-        PdirLft=Pdir-2<<29>>>29;
+        var PdirLft=Pdir-2<<29>>>29;
+        var diagLeft= Orion.CanWalk(Pdir-4<<29>>>29,Player.X()+xx[PdirLft],Player.Y()[PdirLft],Player.Z());        
+
         Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
         if(Cwalk(PdirLft)){   //Proverka esli sleva pustoy tile
-            Pdir=PdirLft;
-            Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
-            Walk(Pdir);
-            say('Proverka esli sleva pustoy tile[uspeshno]')
+            if(!diagLeft){
+                Pdir=PdirLft;
+                Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
+                Walk(Pdir);
+                say('Proverka esli sleva pustoy tile[uspeshno]')
+            }
         }
 
         //esli idesh v dol'
@@ -177,9 +189,9 @@ function main(){
         	Pdir=sbrosrudi();
         	 Orion.SetTrack(true, Player.X()+xx[Pdir]*2, Player.Y()+yy[Pdir]*2);
         Walk(Pdir);
-        if(Player.Mana()==100){
-        	Magery();
-        }
+       if(Player.Mana()==100)
+       	Magery();
+     
         // if(Cwalk((Player.Direction()-2<<29>>>29))) //32 64
 
         // while(!Cwalk()){        //Cwalk "VPERED"

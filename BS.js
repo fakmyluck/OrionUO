@@ -19,7 +19,7 @@ Orion.Print(men);
 
 //var spell='agility';
 function Magery(){
-		while(Player.Mana()>33){//>15
+		while(Player.Mana()==100){//>15
 	
 		Orion.Cast('poison');
 		if (Orion.WaitForTarget(1000))
@@ -29,7 +29,7 @@ function Magery(){
 
 
 		Orion.UseSkill('meditation');
-		Orion.Wait(6000);
+		Orion.Wait(3000);
 	
 	}
 
