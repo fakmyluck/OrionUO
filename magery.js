@@ -1,14 +1,9 @@
 var spell='16';
 
 function Magery(){
-		var spell='agility';
     while(1){
-        while(Player.Mana()>15){//>15
-            if(spell=='agility')
-                spell='harm';
-            else
-                spell='agility';
-            Orion.Cast(spell);
+        while(Player.Mana()==100){//>15
+            Orion.Cast('poison');
             if (Orion.WaitForTarget(1000))
                 Orion.TargetObject('self');
             Orion.Wait(3000);

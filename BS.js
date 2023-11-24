@@ -40,8 +40,11 @@ Orion.UseType('0x13E3', '0xFFFF');
 if(Orion.WaitForTarget(1000))
 Orion.CancelTarget();
 	var counter=0;
-Orion.Print(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()+' Iron');
-while(Orion.FindObject(Orion.FindType('0x1BEF', '0x0000')).Count()>2){
+	var iron=Orion.FindType('0x1BEF', '0x0000');
+Orion.Print(Orion.FindObject(iron).Count()+' Iron');
+while(Orion.FindObject(iron)){
+if(Orion.FindObject(iron).Count()<3)
+	break;
 	//Orion.UseType('0x13E3', '0xFFFF');		//molotok
 	//Orion.Wait(300);
 	//if (Orion.WaitForTarget(1000))

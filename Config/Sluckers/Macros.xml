@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="drop" looped="true" delay="0.3">
+        <action type="10" convert_type="1" waiting_time="300" serial="0x402AA2CE" graphic="0x19B7" color="0x0193" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="60" y="113" z="0" slot="255" container="0x4041434F" relative_x="-68" relative_y="-13" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x4008FAD1" graphic="0x19BA" color="0x0193" count="2"/>
+        <action type="11" convert_type="0" waiting_time="500" x="46" y="65" z="0" slot="255" container="0x4041434F" relative_x="-82" relative_y="-61" relative_z="0"/>
+        <action type="10" convert_type="1" waiting_time="300" serial="0x4008F0E1" graphic="0x19B8" color="0x0193" count="3"/>
+        <action type="11" convert_type="0" waiting_time="500" x="73" y="81" z="0" slot="255" container="0x4041434F" relative_x="-55" relative_y="-45" relative_z="0"/>
+    </macro>
+    <macro name="poison" looped="false" delay="1">
+        <action type="9" convert_type="0" waiting_time="1000" value="In Nox "/>
+    </macro>
+    <macro name="weld" looped="false" delay="1">
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x4056439F" graphic="0x13E3" color="0x0000"/>
+    </macro>
+</data>
