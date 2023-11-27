@@ -8,8 +8,8 @@ var tmp=false;
 const turn_delay=50;    //proverit'
 
 //VAr iz TEST.js
-
-const left=-1;
+ 
+const left=-1; 
 const right=1;
 const _=undefined;
 var turnside=1;
