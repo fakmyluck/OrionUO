@@ -1,5 +1,5 @@
 var exit=false;
-var Pdir=Player.Direction();
+//var Pdir=Player.Direction();
 const run=true;
 const walk=false;
 var walkdelay=450;
@@ -178,22 +178,20 @@ function Walk(Direction){
     
 function Obbegalka(Dir){    //vozvrashaet Direction
 
-    while(1){   //Kazhdaja iiteracija - noviy koordinat <<???
-
-        var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
-        var Reverse=Dir-4<<29>>>29;
-        if(Cwalk(DirCheck)){   //Proverka esli sleva pustoy tile
-            if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z()))
-                Dir=DirCheck; // Proverit;
-            Walk(Dir);
-        }
-
-        //esli idesh v dol'
-        while(!Cwalk(Dir)){  //Poka nemozhet idti v storonu Dir
-            Dir=Dir+2*turnside<<29>>>29;
-        }
+    var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
+    var Reverse=Dir-4<<29>>>29;
+    if(Cwalk(DirCheck)){   //Proverka esli sleva pustoy tile
+        if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z()))
+            Dir=DirCheck; // Proverit;
         Walk(Dir);
-    } 
+    }
+
+    //esli idesh v dol'
+    while(!Cwalk(Dir)){  //Poka nemozhet idti v storonu Dir
+        Dir=Dir+2*turnside<<29>>>29;
+    }
+    Walk(Dir);
+    
 }
 
 /**function newPrewalk
@@ -238,61 +236,18 @@ function Prewalk(Dir){
 }
 
 function main(){
-    Pdir=Player.Direction();
 
 // void Orion.Resend();
 // Synchronisation with the server. Can be used every few seconds.
-
-    while( Cwalk(Pdir) ){
-        say("<:"+Cwalk(Pdir-1)+'\t'+Cwalk(Pdir+1)+':>');
-        if(Pdir%2==1&&!(Cwalk(Pdir-1)*Cwalk(Pdir+1))){   
-            Pdir=(Pdir+1)%8;    //<<29>>>29;          
-            
-            if(Cwalk(Pdir)){                                //    X
-            say('.МОГУ. пойти ваерёд после нармализации');  //  ==>-->
-            Walk(Pdir)                                      //          Break;
-            }
-            else{                                           //     x
-                say('.НЕ МОГУ. пойти ваерёд')               //  ==>X
-                Pdir+=2;    
-                //Orion.Track(true, x[Pdir], y[Pdir]);                                //    |x
-            }                                               //          Break;
-            break;
-        }else{                                              //   x
-            Walk(Pdir);                                     //  ==>-->-....-X
-        }                                                   //  x   x
-    }
-
-        say("Nachalo bezkonechnogo cikla");
-    while(!exit){   //Kazhdaja iiteracija - noviy koordinat
-        
-        Mining();
-        say('[mining complete!]')
-        PdirLft=Pdir-2<<29>>>29;
-        //Orion.Track(true, x[Pdir], y[Pdir]);
-        if(Cwalk(PdirLft)){   //Proverka esli sleva pustoy tile
-            Pdir=PdirLft;
-            //Orion.Track(true, x[Pdir], y[Pdir]);
-            Walk(Pdir);
-            say('Proverka esli sleva pustoy tile[uspeshno]')
-        }
-
-        //esli idesh v dol'
-        while(!Cwalk(Pdir)){  //Poka nemozhet idti v storonu Pdir
-            Pdir=Pdir+2<<29>>>29;
-            //Orion.Track(true, x[Pdir], y[Pdir]);
-            say('Poka nemozhet idti v storonu Pdir[uspeshno]')
-        }
-        Walk(Pdir);
-        if(Player.Mana()==100){
-        	Magery();
-        }
-    }   
 
     /////tst,js
     Prewalk(Player.Direction());     //Idti vpered poka ne stuknewsa v prepatstvie
 
     say("Nachalo bezkonechnogo cikla");
-    Obbegalka(Player.Direction());
-
+    while(!exit){
+        Mining();
+        Obbegalka(Player.Direction());
+        if(Player.Mana()==100)
+        	Magery();
+    }
 }
