@@ -8,7 +8,7 @@ var tmp=false;
 const turn_delay=50;    //proverit'
 
 //VAr iz TEST.js
- 
+const direction=['/','-','\\','|'];
 const left=-1; 
 const right=1;
 const _=undefined;
@@ -20,6 +20,7 @@ var turnside=1;
 
 function say(text){
     Orion.Print(text);
+    Orion.Wait(2000)
 }
 
 		//PRAVELN'no JA ZAPUTALSA EPT 
@@ -43,13 +44,13 @@ function CwalkOrdinal(Dir){ //!!NB!! esli ordinal'no upersa v pramuju poverhnost
     var rDir=(Dir+right)<<29>>>29;
     var Y=Player.Y()
     var X=Player.X()
-    var X=Player.Z()
+    var Z=Player.Z()
     var rY=Player.Y()+xx[rDir]
     var rX=Player.X()+yy[rDir]
     var L=  Orion.CanWalk(lDir,X,Y,Z);//Left prepatstvie
     var C=  Orion.CanWalk(lDir,rX,rY,Z);//Dagonal(center)
     var R=  Orion.CanWalk(rDir,X,Y,Z);//Right prepatstvie
-
+say("CwalkOrdinal")
     //// Dobavit' proverku na ordinal'niy tile cherez OTSTUP i proverku cherez CArdinalniy tile
     if(Dir%2){  //Ordinal Direction
         if(!L&&!R){    //TUpIk                                
@@ -91,11 +92,12 @@ function Cwalk(Dir){    //complete
     // var C=world[dY][dX];     //Prepatstvie po pramoi
 
     if(Dir%2){  //Diagonalniy variant
+         //           say("Dir "+Dir+" is "+CwalkOrdinal(Dir))    //debug
         return CwalkOrdinal(Dir);  
     }
-    else{
-        Orion.CanWalk(Dir,X,Y,Player.Z())
-    }
+         //           say("Dir "+Dir+" is "+Orion.CanWalk(Dir,X,Y,Player.Z()))//debug
+    return Orion.CanWalk(Dir,X,Y,Player.Z())
+    
 }
 
 function gotomines(){
@@ -173,6 +175,8 @@ function Walk(Direction){
     Orion.Wait(440); //~440wlk  //~215rn
     if(!moved)
         say("Шаг неудачен") //Ubrat'
+    else
+        say("shagnul")
     return moved;
 }
     
@@ -199,9 +203,9 @@ function Obbegalka(Dir){    //vozvrashaet Direction
  * return 1 / -1?
  */
 function Prewalk(Dir){
-    //Player.Direction=Dir;
-   
+    Dir=Dir<<29>>>29;
     if(Dir%2){// \ / 
+        //say("prewalk Dir%2="+Dir%2)
         while(CwalkOrdinal(Dir)){    // v CwalkOrdinal izmenit' Return val !!!!
             Walk(Dir)
 
@@ -209,25 +213,34 @@ function Prewalk(Dir){
                 cprint('error!?')
                 return -1
             }
+            void Orion.Resend();
         }
         
-        say('Upersa v stenu Prewalk  (Dir='+Dir+')')
+        //say('Upersa v stenu Prewalk  (Dir='+Dir+')')
         Dir+=turnside
-        cprint('New Dir(+1)='+Dir);
-        if(Cwalk(Dir))
+        // say('New Dir(+1)='+Dir);
+        // say('Cwalk(Dir)='+Cwalk(Dir))
+        if(Cwalk(Dir)){
             Walk(Dir)
-        else
+            say("shagnuli na "+Dir)
+        }else{
+            say("else")
             Dir+=2*turnside
-        // Player.Direction()=Dir
+        }
+        Orion.Turn(Dir)
+        // say("(%2) Povernulsa, konchil Prewalk Player.Direction="+Player.Direction())
+        // say("Player.Direction="+Player.Direction())
         return 1
     }
 
     while (Cwalk(Dir)){ // Esli Cardinal Dir +
+        say("Prewalk Cwalk(Dir)")
         Walk(Dir)
         if(Player.Direction()!=Dir){  //err handler
             cprint('error!?')
             return -1
         }
+        void Orion.Resend();
     }
     // Player.Direction=Dir+2*turnside
     Orion.Turn(Dir+2*turnside);
@@ -245,9 +258,11 @@ function main(){
 
     say("Nachalo bezkonechnogo cikla");
     while(!exit){
-        Mining();
+    say("wewe");
+        //Mining();
         Obbegalka(Player.Direction());
-        if(Player.Mana()==100)
-        	Magery();
+        //if(Player.Mana()==100)
+        //	Magery();
+        say ("end")
     }
 }
