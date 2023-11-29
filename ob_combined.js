@@ -184,13 +184,24 @@ function Obbegalka(Dir){    //vozvrashaet Direction
 
     var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
     var Reverse=Dir-4<<29>>>29;
-    if(Cwalk(DirCheck)){   //Proverka esli sleva pustoy tile
-        if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z()))
+    Orion.SetTrack(true, Player.X()+xx[DirCheck], Player.Y()+yy[DirCheck]);
+    say("proveraem prepatstvija s leva ->")
+
+    /**Proveraem na obbeganie */
+    if(Cwalk(DirCheck)){  
+        Orion.SetTrack(true, Player.X()+xx[DirCheck]+xx[Reverse], Player.Y()+yy[DirCheck]+yy[Reverse);
+        say("proveraem prepatstvije ... ->")
+        if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z())){
             Dir=DirCheck; // Proverit;
+            say("If proiden")
+        }else{
+            say("else v  Obbegalke")
+        }
+        }
         Walk(Dir);
     }
 
-    //esli idesh v dol'
+    /**Uzhe znaem shto mi chegoto obbegaem, proveraem, mozhem li mi idti vpered */
     while(!Cwalk(Dir)){  //Poka nemozhet idti v storonu Dir
         Dir=Dir+2*turnside<<29>>>29;
     }
