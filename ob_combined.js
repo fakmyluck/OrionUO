@@ -29,11 +29,11 @@ function say(text){
     //    5----+----1     -1    X     1       1    Y    -1       
     //      4  |  2          0     1            1     0         
     //         3                1                  1      
-    // const xx=[0,1,1,1,0,-1,-1,-1];//otstup po X  
-    // const yy=[-1,-1,0,1,1,1,0,-1];//Otstup po Y
-     var xx=[-1,-1,0,1,1,1,0,-1]; /// NE{RTAVO:NP}
-     var yy=[0,1,1,1,0,-1,-1,-1]; //NEVERMNo
-
+    const xx=[0,1,1,1,0,-1,-1,-1];//otstup po X  
+    const yy=[-1,-1,0,1,1,1,0,-1];//Otstup po Y
+    //  var xx=[-1,-1,0,1,1,1,0,-1]; /// NE{RTAVO:NP}!!!!!!!!!!!
+    //  var yy=[0,1,1,1,0,-1,-1,-1]; //NEVERMNo!!!!!!!!!!!!
+     
 //      7   0   1      -1    0    1         -1   -1   -1 
 //          |                    
 //      6---+---2      -1    X    1          0    Y    0       
@@ -100,22 +100,7 @@ function Cwalk(Dir){    //complete
     
 }
 
-function gotomines(){
-	var co=[
-    [2547,2547,  2553,   2566,    2580,   2581,   2581,   2558,    2520],
-    [831	,795,   766,    737,    695,    665,    633,    599,    558]];
-	 var coMinnoc=Math.abs(Player.X()-co[0][co[0].length-1])+Math.abs(Player.Y()-co[1][co[1].length-1]);
-	 var coMines=Math.abs(Player.X()-co[0][0])+Math.abs(Player.Y()-co[1][0]);
- 
-	if(coMines<coMinnoc)
-        for(i=2;i<=co[0].length-1;i++)	// SHAHTA -> minoc
-	        Orion.Print(Orion.WalkTo(co[0][i],  co[1][i]));
-	else
-	    for(i=co[0].length-3;i>=0;i--)  // MINNOC -> shahta
-	        Orion.Print(Orion.WalkTo(co[0][i],  co[1][i]));
-	
-	Orion.Turn(4);
-}
+
 
 function Hid(){
 	if(!Player.Hidden()){
@@ -142,25 +127,24 @@ function Magery(){
 	
 function Mining()
 {
-    var Y=Player.Y();
-    var X=Player.X();
-    var Z=Player.Z();
+    // var Y=Player.Y();
+    // var X=Player.X();
+    // var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-      //  if(Player.Mana()==100)
-      //  Magery();
-         Orion.Print(Orion.ValidateTargetTile('mine',X+x, Y+y));
-            if(Orion.ValidateTargetTile('mine',X+x, Y+y)){
-        
+       if(Player.Mana()==100)
+        Magery();
+            if(Orion.ValidateTargetTileRelative('mine',x, y)||Orion.ValidateTargetTileRelative('mine',x, y,5)){ 
                 Orion.SetTrack(true, X+x*2, Y+y*2);
-                for(ii=0;ii<66;ii++){
+                for(i=0;i<66;i++){
                     Hid();
+                    //Orion.UseType('0x0E86', '0xFFFF');	//Kirilovskie stremnie kirki
                     Orion.UseType('0x0E85', '0xFFFF');
-                    //Orion.UseObject('0x40435F67');  // /\USE TYPE/\
+                    
                     if (Orion.WaitForTarget(1000))
                         Orion.TargetTileRelative('mine', x, y,Z);
                         
-                    if(Orion.WaitJournal('There is no ore', Orion.Now(), Orion.Now()+500))
+                    if(Orion.WaitJournal('There is no ore', Orion.Now(), Orion.Now()+800))
                         break;  //NADEJUS' VQBJET IZ for cikla
                     else
                         Orion.WaitJournal('You loosen || You put', Orion.Now(), Orion.Now()+6050);//Orion.Wait(5800);  
@@ -185,11 +169,11 @@ function Obbegalka(Dir){    //vozvrashaet Direction
     var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
     var Reverse=Dir-4<<29>>>29;
     Orion.SetTrack(true, Player.X()+xx[DirCheck], Player.Y()+yy[DirCheck]);
-    say("proveraem prepatstvija s leva ->")
+    say("proveraem prepatstvija s leva ->");
 
     /**Proveraem na obbeganie */
     if(Cwalk(DirCheck)){  
-        Orion.SetTrack(true, Player.X()+xx[DirCheck]+xx[Reverse], Player.Y()+yy[DirCheck]+yy[Reverse);
+        Orion.SetTrack(true, Player.X()+xx[DirCheck]+xx[Reverse], Player.Y()+yy[DirCheck]+yy[Reverse]);
         say("proveraem prepatstvije ... ->")
         if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z())){
             Dir=DirCheck; // Proverit;
@@ -197,7 +181,7 @@ function Obbegalka(Dir){    //vozvrashaet Direction
         }else{
             say("else v  Obbegalke")
         }
-        }
+    
         Walk(Dir);
     }
 
