@@ -20,9 +20,12 @@ var turnside=1;
 
 function say(text){
     Orion.Print(text);
-    Orion.Wait(2000)
+    Orion.Wait(500)
 }
 
+var Bad_loc=[   [4206,4205,4204],//X
+                [602,602,602]]   //Y
+var Good_loc=[[4181],[582]];
 		//PRAVELN'no JA ZAPUTALSA EPT 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
@@ -67,6 +70,31 @@ function Cwalk(Dir){    //complete
     return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
 
+function sbrosrudi(){
+    while(Player.X()!=4228 && Player.Y()!=638 ){
+        Orion.Wait(300);
+	    Orion.WalkTo(4228, 638, 0);
+    }
+    Orion.Print(Player.X())
+    Orion.Print(Player.Y())
+    
+	for(i=0;i<15;i++){
+	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
+	if (findItems0[0])
+	{
+		Orion.DragItem(findItems0[0]);
+		Orion.Wait('300');
+	}
+	else
+	break
+	Orion.DropDraggedItem('0x40370BE1');
+	Orion.Wait('500');
+	}
+	
+	Orion.WalkTo(4208, 606, 0);
+	return 2;
+}
+
 function Hid(){
 	if(!Player.Hidden()){
 		Orion.WarMode(1);
@@ -92,9 +120,9 @@ function Magery(){
 	
 function Mining()
 {
-    // var Y=Player.Y();
-    // var X=Player.X();
-    // var Z=Player.Z();
+    var Y=Player.Y();
+    var X=Player.X();
+    var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
        if(Player.Mana()==100)
@@ -121,6 +149,7 @@ function Mining()
 
 function Walk(Direction){
     var moved = Orion.Step(Direction,walk);
+    // Mining();
     Orion.Wait(440); //~440wlk  //~215rn
     if(!moved)
         say("Шаг неудачен") //Ubrat'
@@ -130,6 +159,15 @@ function Walk(Direction){
 }
     
 function Obbegalka(Dir){    //vozvrashaet Direction
+
+    if((Player.Weight()/Player.MaxWeight())>0.95)
+        return sbrosrudi()
+	if(Player.X()<3929) //esli ushol na verh ostrova
+		return sbrosrudi();
+    if((Player.X()==4206||Player.X()==4205||Player.X()==4204)&Player.Y()==602){
+        Orion.WalkTo(4181	,582,0);                  //Esli k ETTINAM ushol
+        Dir=2;
+    }
 
     var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
     var Reverse=Dir-4<<29>>>29;
@@ -192,7 +230,7 @@ function Prewalk(Dir){
     while (Cwalk(Dir)){ // Esli Cardinal Dir +
         Walk(Dir)
         if(Player.Direction()!=Dir){  //err handler
-            cprint('error!?')
+            say('error!?')
             return -1
         }
         void Orion.Resend();
@@ -205,8 +243,8 @@ function main(){
 
     say("Nachalo bezkonechnogo cikla");
     while(!exit){
-        //Mining();
+        Mining();
         Dir=Obbegalka(Dir);
-        //	Magery();
+        Magery();
     }
 }

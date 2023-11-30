@@ -24,12 +24,12 @@ function Cwalk(Direction){  //no arg = Player.Direction
 }
 
 function Hid(){
-/*	if(!Player.Hidden()){
+	if(!Player.Hidden()){
 		Orion.WarMode(1);
 		Orion.WarMode(0);
 		Orion.UseSkill('Hiding');
 		Orion.Wait(3000);
-	}*/
+	}
 }
 
 function Magery(){
@@ -60,8 +60,8 @@ function Mining()
                																																											 //Orion.SetTrack(true, X+x*2, Y+y*2);
                 for(i=0;i<66;i++){
                     Hid();
-                    Orion.UseType('0x0E86', '0xFFFF');
-                    //Orion.UseType('0x0E85', '0xFFFF');
+                    //Orion.UseType('0x0E86', '0xFFFF');	//Kirilovskie stremnie kirki
+                    Orion.UseType('0x0E85', '0xFFFF');
                     
                     if (Orion.WaitForTarget(1000))
                         Orion.TargetTileRelative('mine', x, y,Z);
@@ -77,10 +77,13 @@ function Mining()
 }
 
 function sbrosrudi(){
-    while(Player.X()!=4224 && Player.Y()!=638 ){
+    while(Player.X()!=4228 && Player.Y()!=638 ){
         Orion.Wait(300);
-	    Orion.WalkTo(4223, 638, 0);
+	    Orion.WalkTo(4228, 638, 0);
     }
+    Orion.Print(Player.X())
+    Orion.Print(Player.Y())
+    
 	for(i=0;i<15;i++){
 	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
 	if (findItems0[0])
@@ -90,7 +93,7 @@ function sbrosrudi(){
 	}
 	else
 	break
-	Orion.DropDraggedItem('0x403FB167');
+	Orion.DropDraggedItem('0x40370BE1');
 	Orion.Wait('500');
 	}
 	
@@ -103,7 +106,7 @@ function sbrosrudi(){
 // Orion.SetBadLocation(4205, 602, -1);
 // Orion.SetBadLocation(4204, 602, -1);
 function Walk(Direction){
- Mining();
+    Mining();
 	if(Player.X()<3929) //esli ushol na verh ostrova
 		return sbrosrudi();
     if((Player.X()==4206||Player.X()==4205||Player.X()==4204)&Player.Y()==602){
@@ -116,7 +119,9 @@ function Walk(Direction){
         say("Шаг неудачен") //Ubrat'
     return moved;
 }
-    
+
+
+
 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
