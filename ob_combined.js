@@ -40,67 +40,32 @@ function say(text){
 //          |              
 //      5   4   3      -1    0    1          1    1    1     
 function CwalkOrdinal(Dir){ //!!NB!! esli ordinal'no upersa v pramuju poverhnost', to personazh povernetsa
-    var lDir=(Dir+left)<<29>>>29;
-    var rDir=(Dir+right)<<29>>>29;
-    var Y=Player.Y()
-    var X=Player.X()
-    var Z=Player.Z()
-    var rY=Player.Y()+xx[rDir]
-    var rX=Player.X()+yy[rDir]
+    var lDir=(Dir+left)<<29>>>29;   // <-   C
+    var rDir=(Dir+right)<<29>>>29;  //      C   ->
+    var X=  Player.X()
+    var Y=  Player.Y()
+    var Z=  Player.Z()
+    var rX=X+xx[rDir]               //coordinat sprava
+    var rY=Y+yy[rDir]               
     var L=  Orion.CanWalk(lDir,X,Y,Z);//Left prepatstvie
     var C=  Orion.CanWalk(lDir,rX,rY,Z);//Dagonal(center)
     var R=  Orion.CanWalk(rDir,X,Y,Z);//Right prepatstvie
-say("CwalkOrdinal")
-    //// Dobavit' proverku na ordinal'niy tile cherez OTSTUP i proverku cherez CArdinalniy tile
-    if(Dir%2){  //Ordinal Direction
-        if(!L&&!R){    //TUpIk                                
-            say('Upersa v stenu (CwalkOrdinal)');                 //     ####
-            return -1   //       @ # 
-        }
-        else if(!L){  //esli slevo prepatstvie
-            say("Prepatstvie (L="+L+") s levo")
-            return 0
-        }else if(!R){      //esli spravo prepatstvie
-            say("Prepatstvie (R="+R+") s Pravo");
-            return 0
-        }else if(C){
-            if(!R||!L){
-                say('OPYAT CHETO POWLO NETA')
-            }
-            return 1
-        }else{
-            say("Puersa v Ostrie?? CwalkOrdinal -> else");
-            return 0
-        }
-    }else
-    say('ERROR? -> else Ordinalno ne ordinalno??');
-    return -2
+   
+    if(L&C&R)
+        return 1
+    return 0
 }
-
-// function Cwalk(Direction){  //no arg = Player.Direction
-//     if(Direction==null)
-//         Direction=Player.Direction();
-//     return Orion.CanWalk(Direction,Player.X(),Player.Y(),Player.Z());
-// }
 
 function Cwalk(Dir){    //complete
     Dir=Dir<<29>>>29;
-    var Y=Player.Y();
-    var X=Player.X();
-    // var dY=Y+yy[Dir];
-    // var dX=X+xx[Dir];
-    // var C=world[dY][dX];     //Prepatstvie po pramoi
+    
+    Point(Dir);
 
     if(Dir%2){  //Diagonalniy variant
-         //           say("Dir "+Dir+" is "+CwalkOrdinal(Dir))    //debug
         return CwalkOrdinal(Dir);  
     }
-         //           say("Dir "+Dir+" is "+Orion.CanWalk(Dir,X,Y,Player.Z()))//debug
-    return Orion.CanWalk(Dir,X,Y,Player.Z())
-    
+    return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
-
-
 
 function Hid(){
 	if(!Player.Hidden()){
@@ -112,7 +77,8 @@ function Hid(){
 }
 
 function Magery(){
-//return
+    if(Player.Mana()!=100)
+        return
     while(Player.Mana()>30){//>15
    
         Orion.Cast('poison');
@@ -120,7 +86,6 @@ function Magery(){
             Orion.TargetObject('self');
         Orion.Wait(3000);
     }
-
     Orion.UseSkill('meditation');
     Orion.Wait(2500);    
 }
@@ -160,7 +125,7 @@ function Walk(Direction){
     if(!moved)
         say("Шаг неудачен") //Ubrat'
     else
-        say("shagnul")
+        Orion.Print("shagnul")
     return moved;
 }
     
@@ -168,9 +133,7 @@ function Obbegalka(Dir){    //vozvrashaet Direction
 
     var DirCheck=Dir-(2*turnside)<<29>>>29;        //kosyak1!!!11!!>>>>> (esli nachalo bqlo s cardinal direction)
     var Reverse=Dir-4<<29>>>29;
-    Orion.SetTrack(true, Player.X()+xx[DirCheck], Player.Y()+yy[DirCheck]);
-    say("proveraem prepatstvija s leva ->");
-
+    
     /**Proveraem na obbeganie */
     if(Cwalk(DirCheck)){  
         Orion.SetTrack(true, Player.X()+xx[DirCheck]+xx[Reverse], Player.Y()+yy[DirCheck]+yy[Reverse]);
@@ -190,46 +153,43 @@ function Obbegalka(Dir){    //vozvrashaet Direction
         Dir=Dir+2*turnside<<29>>>29;
     }
     Walk(Dir);
-    
+    return Dir
+}
+
+function Point(Dir){
+    var X=Player.X()+xx[Dir]*2;
+    var Y=Player.Y()+yy[Dir]*2;
+    Orion.SetTrack(true,X,Y);
+    Orion.Wait(1000);
+    Orion.SetTrack(false);
+    return
 }
 
 /**function newPrewalk
  * Idet vpered poka ne kosnetsa stenq (peredom)
- * return 1 / -1?
- */
+ * return 1 / -1?*/
 function Prewalk(Dir){
     Dir=Dir<<29>>>29;
-    if(Dir%2){// \ / 
-        //say("prewalk Dir%2="+Dir%2)
+    if(Dir%2){
         while(CwalkOrdinal(Dir)){    // v CwalkOrdinal izmenit' Return val !!!!
             Walk(Dir)
 
             if(Player.Direction()!=Dir){  //err handler
-                cprint('error!?')
-                return -1
-            }
-            void Orion.Resend();
+                say('error!?\nPlayer.Direction()!=Dir')
+                Orion.Wait(3000);
+                //return -1
+            }void Orion.Resend();
         }
-        
-        //say('Upersa v stenu Prewalk  (Dir='+Dir+')')
         Dir+=turnside
-        // say('New Dir(+1)='+Dir);
-        // say('Cwalk(Dir)='+Cwalk(Dir))
         if(Cwalk(Dir)){
             Walk(Dir)
-            say("shagnuli na "+Dir)
         }else{
-            say("else")
             Dir+=2*turnside
         }
-        Orion.Turn(Dir)
-        // say("(%2) Povernulsa, konchil Prewalk Player.Direction="+Player.Direction())
-        // say("Player.Direction="+Player.Direction())
-        return 1
+        return Dir
     }
 
     while (Cwalk(Dir)){ // Esli Cardinal Dir +
-        say("Prewalk Cwalk(Dir)")
         Walk(Dir)
         if(Player.Direction()!=Dir){  //err handler
             cprint('error!?')
@@ -237,27 +197,16 @@ function Prewalk(Dir){
         }
         void Orion.Resend();
     }
-    // Player.Direction=Dir+2*turnside
-    Orion.Turn(Dir+2*turnside);
-    Orion.Wait(turn_delay); //????
-    return 1
+    return Dir+2*turnside
 }
 
 function main(){
-
-// void Orion.Resend();
-// Synchronisation with the server. Can be used every few seconds.
-
-    /////tst,js
-    Prewalk(Player.Direction());     //Idti vpered poka ne stuknewsa v prepatstvie
+    var Dir=Prewalk(Player.Direction());     //Idti vpered poka ne stuknewsa v prepatstvie
 
     say("Nachalo bezkonechnogo cikla");
     while(!exit){
-    say("wewe");
         //Mining();
-        Obbegalka(Player.Direction());
-        //if(Player.Mana()==100)
+        Dir=Obbegalka(Dir);
         //	Magery();
-        say ("end")
     }
 }
