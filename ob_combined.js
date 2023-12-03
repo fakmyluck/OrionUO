@@ -2,7 +2,7 @@ var exit=false;
 //var Pdir=Player.Direction();
 const run=true;
 const walk=false;
-var walkdelay=450;
+var walkdelay=415;
 var debw=3000;
 var tmp=false;
 const turn_delay=50;    //proverit'
@@ -20,7 +20,7 @@ var turnside=1;
 
 function say(text){
     Orion.Print(text);
-    Orion.Wait(500)
+    //Orion.Wait(500)
 }
 
 var Bad_loc=[   [4206,4205,4204],//X
@@ -158,7 +158,7 @@ function Mining()
 
 function Walk(Direction){
     var moved = Orion.Step(Direction,walk);
-    Orion.Wait(440); //~440wlk  //~215rn
+    Orion.Wait(walkdelay); //~440wlk  //~215rn
     if(Player.X()<3929||Player.X()>4259) //esli ushol na verh ostrova
 		return sbrosrudi();
     if((Player.X()==4206||Player.X()==4205||Player.X()==4204)&Player.Y()==602){
@@ -169,6 +169,7 @@ function Walk(Direction){
         say("Шаг неудачен") //Ubrat'
     else
         Orion.Print("shagnul")
+    Orion.SetTrack(false);
     return moved;
 }
     
@@ -212,8 +213,8 @@ function Point(Dir){
     var X=Player.X()+xx[Dir]*2;
     var Y=Player.Y()+yy[Dir]*2;
     Orion.SetTrack(true,X,Y);
-    Orion.Wait(1000);
-    Orion.SetTrack(false);
+    //Orion.Wait(1000);
+    //Orion.SetTrack(false);
     return
 }
 
@@ -260,8 +261,11 @@ function main(){
     while(!exit){
         Magery();
         Mining();
+        var olDir=Dir
         Dir=Obbegalka(Dir);
-        Dir=Obbegalka(Dir);
-        Dir=Obbegalka(Dir);
+        if(Dir==olDir)
+            Dir=Obbegalka(Dir);
+        if(Dir==olDir)
+            Dir=Obbegalka(Dir);
     }
 }
