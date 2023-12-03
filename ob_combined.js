@@ -105,9 +105,9 @@ function Hid(){
 }
 
 function Magery(){
-    if(Player.Mana()!=100)
+    if(Player.Mana()!=100 || Saw_Something)
         return
-    while(Player.Mana()>30){//>15
+    while(Player.Mana()==100){//>15
    
         Orion.Cast('poison');
         if (Orion.WaitForTarget(1000))
@@ -118,6 +118,7 @@ function Magery(){
     Orion.Wait(2500);    
 }
 	
+var Saw_Something =0;
 function Mining()
 {
     var Y=Player.Y();
@@ -125,8 +126,8 @@ function Mining()
     var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-       if(Player.Mana()==100)
-        Magery();
+            if(Player.Mana()==100&&!Saw_Something)
+                Magery();
             if(Orion.ValidateTargetTileRelative('mine',x, y)||Orion.ValidateTargetTileRelative('mine',x, y,5)){ 
                 Orion.SetTrack(true, X+x*2, Y+y*2);
                 for(i=0;i<66;i++){
@@ -141,6 +142,13 @@ function Mining()
                         break;  //NADEJUS' VQBJET IZ for cikla
                     else
                         Orion.WaitJournal('You loosen || You put', Orion.Now(), Orion.Now()+6050);//Orion.Wait(5800);  
+                    if(Orion.InJournal('You see','my|sys', 0, 0xFFFF , [-1000, 0])){
+                        Saw_Something=1;
+                        Orion.WalkTo(4228, 638, 0,5);
+                        Orion.UseSkill('Hiding');
+                        sbrosrudi()
+                        return;
+                    }
                 }
             }
         }
@@ -149,8 +157,13 @@ function Mining()
 
 function Walk(Direction){
     var moved = Orion.Step(Direction,walk);
-    // Mining();
     Orion.Wait(440); //~440wlk  //~215rn
+    if(Player.X()<3929||Player.X()>4259) //esli ushol na verh ostrova
+		return sbrosrudi();
+    if((Player.X()==4206||Player.X()==4205||Player.X()==4204)&Player.Y()==602){
+        Orion.WalkTo(4181	,582,0);                  //Esli k ETTINAM ushol
+        Dir=2;
+    }
     if(!moved)
         say("Шаг неудачен") //Ubrat'
     else
@@ -218,12 +231,13 @@ function Prewalk(Dir){
                 //return -1
             }void Orion.Resend();
         }
-        Dir+=turnside
+        Dir=(Dir+turnside)<<29>>>29;
         if(Cwalk(Dir)){
             Walk(Dir)
         }else{
-            Dir+=2*turnside
+            Dir=(Dir+2*turnside)<<29>>>29;
         }
+        say(Dir)
         return Dir
     }
 
@@ -235,16 +249,18 @@ function Prewalk(Dir){
         }
         void Orion.Resend();
     }
-    return Dir+2*turnside
+    return Dir+2*turnside<<29>>>29
 }
 
 function main(){
     var Dir=Prewalk(Player.Direction());     //Idti vpered poka ne stuknewsa v prepatstvie
 
-    say("Nachalo bezkonechnogo cikla");
+    say("Nachalo bezkonechnogo cikla Dir="+Dir);
     while(!exit){
+        Magery();
         Mining();
         Dir=Obbegalka(Dir);
-        Magery();
+        Dir=Obbegalka(Dir);
+        Dir=Obbegalka(Dir);
     }
 }
