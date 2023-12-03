@@ -105,6 +105,7 @@ function Hid(){
 }
 
 function Magery(){
+    return
     if(Player.Mana()!=100 || Saw_Something)
         return
     while(Player.Mana()==100){//>15
