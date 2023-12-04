@@ -73,7 +73,9 @@ function Cwalk(Dir){    //complete
 function findmobs(){
     var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13);
     var kirilka= Orion.FindType('any', 'any', 'ground','human', 13);
-    if(mobs){
+    
+    if(mobs[0]){
+    	Orion.Print("uvidel "+ mobs[0].Name())
         sbrosrudi()
     }
     if(kirilka[1])
@@ -88,7 +90,7 @@ function sbrosrudi(){
     var X=Player.X()
     var Y=Player.Y()
     while(!(X >=4227 && X <=4229 ) || !(Y >=636 && Y <=638)){
-        findmobs()
+       
     //Poprobivat' verhnij varian
     //while(Player.X()!=4228 || Player.Y()!=638 ){
         // if(Player.X()!=??? && Player.Y()!=???){
@@ -98,6 +100,7 @@ function sbrosrudi(){
         Orion.Wait(300);
         Y=Player.Y()
         X=Player.X()
+         findmobs()
     }
     
 	for(i=0;i<15;i++){
