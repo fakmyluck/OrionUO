@@ -76,9 +76,9 @@ function findmobs(){
     if(mobs){
         sbrosrudi()
     }
-    if(kirilka)
+    if(kirilka[1])
     {
-        Orion.Say("Kirilka nayden")
+        Orion.Say("kirilka.Name()=="+kirilka[1].Name())
         Orion.Wait(3000)
         Hid()
     }
