@@ -25,7 +25,7 @@ function say(text){
 
 var Bad_loc=[   [4206,4205,4204],//X
                 [602,602,602]]   //Y
-var Good_loc=[[4181],[582]];
+var Good_loc=[  [4181],[582]];
 		//PRAVELN'no JA ZAPUTALSA EPT 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
@@ -70,10 +70,19 @@ function Cwalk(Dir){    //complete
     return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
 
+function findmobs(){
+    //StringList
+    var mobs= Orion.FindType('any', 'any', 'ground', 'aive', 13);
+}
 function sbrosrudi(){
-    while(Player.X()!=4228 && Player.Y()!=638 ){
+    //while((Player.X()>=4227 && Player.X()<=4229 ) || (Player.Y()>=637 && Player.Y()>=639) ){
+    //Poprobivat' verhnij varian
+    while(Player.X()!=4228 || Player.Y()!=638 ){
+        // if(Player.X()!=??? && Player.Y()!=???){
+        //     Otkrqt' dver'
+        // }
         Orion.Wait(300);
-	    Orion.WalkTo(4228, 638, 0);
+        Orion.WalkTo(4228, 638, 0);
     }
     Orion.Print(Player.X())
     Orion.Print(Player.Y())
