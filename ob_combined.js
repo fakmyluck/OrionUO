@@ -71,21 +71,34 @@ function Cwalk(Dir){    //complete
 }
 
 function findmobs(){
-    //StringList
-    var mobs= Orion.FindType('any', 'any', 'ground', 'aive', 13);
+    var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13);
+    var kirilka= Orion.FindType('any', 'any', 'ground','human', 13);
+    if(mobs){
+        sbrosrudi()
+    }
+    if(kirilka)
+    {
+        Orion.Say("Kirilka nayden")
+        Orion.Wait(3000)
+        Hid()
+    }
 }
+
 function sbrosrudi(){
-    //while((Player.X()>=4227 && Player.X()<=4229 ) || (Player.Y()>=637 && Player.Y()>=639) ){
+    var X=Player.X()
+    var Y=Player.Y()
+    while(!(X >=4227 && X <=4229 ) || !(Y >=636 && Y <=638)){
+        findmobs()
     //Poprobivat' verhnij varian
-    while(Player.X()!=4228 || Player.Y()!=638 ){
+    //while(Player.X()!=4228 || Player.Y()!=638 ){
         // if(Player.X()!=??? && Player.Y()!=???){
         //     Otkrqt' dver'
         // }
+        Orion.WalkTo(4228, 637, 0);
         Orion.Wait(300);
-        Orion.WalkTo(4228, 638, 0);
+        Y=Player.Y()
+        X=Player.X()
     }
-    Orion.Print(Player.X())
-    Orion.Print(Player.Y())
     
 	for(i=0;i<15;i++){
 	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
@@ -99,7 +112,7 @@ function sbrosrudi(){
 	Orion.DropDraggedItem('0x40370BE1');
 	Orion.Wait('500');
 	}
-	
+	findmobs()
 	Orion.WalkTo(4208, 606, 0);
 	return 2;
 }
@@ -115,6 +128,7 @@ function Hid(){
 
 function Magery(){
     return
+    findmobs()
     if(Player.Mana()!=100 || Saw_Something)
         return
     while(Player.Mana()==100){//>15
@@ -141,6 +155,7 @@ function Mining()
             if(Orion.ValidateTargetTileRelative('mine',x, y)||Orion.ValidateTargetTileRelative('mine',x, y,5)){ 
                 Orion.SetTrack(true, X+x*2, Y+y*2);
                 for(i=0;i<66;i++){
+                    findmobs()
                     Hid();
                     //Orion.UseType('0x0E86', '0xFFFF');	//Kirilovskie stremnie kirki
                     Orion.UseType('0x0E85', '0xFFFF');
@@ -166,6 +181,7 @@ function Mining()
 }
 
 function Walk(Direction){
+    findmobs()
     var moved = Orion.Step(Direction,walk);
     Orion.Wait(walkdelay); //~440wlk  //~215rn
     if(Player.X()<3929||Player.X()>4259) //esli ushol na verh ostrova
