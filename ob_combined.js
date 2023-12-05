@@ -46,8 +46,8 @@ function CwalkOrdinal(Dir){ //!!NB!! esli ordinal'no upersa v pramuju poverhnost
     var lDir=(Dir+left)<<29>>>29;   // <-   C
     var rDir=(Dir+right)<<29>>>29;  //      C   ->
     var X=  Player.X()
-    var Y=  Player.Y()
-    var Z=  Player.Z()
+    var Y=  Player.Y()      // 00111
+    var Z=  Player.Z()     //  <<
     var rX=X+xx[rDir]               //coordinat sprava
     var rY=Y+yy[rDir]               
     var L=  Orion.CanWalk(lDir,X,Y,Z);//Left prepatstvie
@@ -70,19 +70,50 @@ function Cwalk(Dir){    //complete
     return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
 
-function findmobs(){
-    var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13);
-    var kirilka= Orion.FindType('any', 'any', 'ground','human', 13);
-    
-    if(mobs[0]){
-    	Orion.Print("uvidel "+ mobs[0].Name())
-        sbrosrudi()
+function panic(Dist){
+    hp=Player.Hits();
+    if(hp<70){
+        Orion.UseSkill('Hiding');
+        Threat=3
+        return
     }
-    if(kirilka[1])
-    {
-        Orion.Say("kirilka.Name()=="+kirilka[1].Name())
-        Orion.Wait(3000)
+    if(Dist<=10){
+        if(Player.Hidden()){
+            Threat=1
+            return
+        }
+        Threat=2
         Hid()
+        return
+    }
+    if(Dist>10){
+        Threat=1
+        return
+    }
+    return
+}
+
+var Threat=0
+var kirilka_timer=new Date();
+function findmobs(){
+    var mob= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort((a,b)=>a-b)[0];
+    if(mob){
+    	Orion.Print("uvidel "+ mob.Name()+", (dist "+mob.Distance()+")")
+        //sbrosrudi()
+        panic(mob.Distance)
+    }else{
+        Threat=0
+    }
+    
+    if(new Date()-kirilka_timer>10000){
+        kirilka_timer=new Date()
+        var kirilka= Orion.FindType('any', 'any', 'ground','human', 13);
+        if(kirilka[1])
+        {
+            Orion.Say("kirilka.Name()=="+kirilka[1].Name())
+            Orion.Wait(3000)
+            Hid()
+        }
     }
 }
 
@@ -90,9 +121,6 @@ function sbrosrudi(){
     var X=Player.X()
     var Y=Player.Y()
     while(!(X >=4227 && X <=4229 ) || !(Y >=636 && Y <=638)){
-       
-    //Poprobivat' verhnij varian
-    //while(Player.X()!=4228 || Player.Y()!=638 ){
         // if(Player.X()!=??? && Player.Y()!=???){
         //     Otkrqt' dver'
         // }
@@ -121,18 +149,20 @@ function sbrosrudi(){
 }
 
 function Hid(){
-	if(!Player.Hidden()){
-		Orion.WarMode(1);
-		Orion.WarMode(0);
-		Orion.UseSkill('Hiding');
-		Orion.Wait(3000);
-	}
+	//if(!Player.Hidden()){
+    Orion.WarMode(1);
+    Orion.WarMode(0);
+    Orion.UseSkill('Hiding');
+    Orion.Wait(300);    //(3000)
+	//}
 }
 
 function Magery(){
     return
     findmobs()
-    if(Player.Mana()!=100 || Saw_Something)
+    if(Threat!=0)
+        return
+    if(Player.Mana()!=100)
         return
     while(Player.Mana()==100){//>15
    
@@ -142,18 +172,19 @@ function Magery(){
         Orion.Wait(3000);
     }
     Orion.UseSkill('meditation');
-    Orion.Wait(2500);    
+    Orion.Wait(250);   //2500 
 }
 	
-var Saw_Something =0;
-function Mining()
-{
+function Mining(){
+    if(Threat>1){
+        return
+    }
     var Y=Player.Y();
     var X=Player.X();
     var Z=Player.Z();
     for(x=(-1);x<2;x++){
         for(y=(-1);y<2;y++){
-            if(Player.Mana()==100&&!Saw_Something)
+            if(Player.Mana()==100)
                 Magery();
             if(Orion.ValidateTargetTileRelative('mine',x, y)||Orion.ValidateTargetTileRelative('mine',x, y,5)){ 
                 Orion.SetTrack(true, X+x*2, Y+y*2);
@@ -170,13 +201,6 @@ function Mining()
                         break;  //NADEJUS' VQBJET IZ for cikla
                     else
                         Orion.WaitJournal('You loosen || You put', Orion.Now(), Orion.Now()+6050);//Orion.Wait(5800);  
-                    if(Orion.InJournal('You see','my|sys', 0, 0xFFFF , [-1000, 0])){
-                        Saw_Something=1;
-                        Orion.WalkTo(4228, 638, 0,5);
-                        Orion.UseSkill('Hiding');
-                        sbrosrudi()
-                        return;
-                    }
                 }
             }
         }
