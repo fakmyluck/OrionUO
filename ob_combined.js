@@ -96,7 +96,7 @@ function panic(Dist){
 var Threat=0
 var kirilka_timer=new Date();
 function findmobs(){
-    var mob= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort((a,b)=>a-b)[0];
+    var mob= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort(function(a,b){return a-b})[0];
     if(mob){
     	Orion.Print("uvidel "+ mob.Name()+", (dist "+mob.Distance()+")")
         //sbrosrudi()
