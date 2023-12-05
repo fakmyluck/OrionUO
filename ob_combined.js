@@ -73,36 +73,118 @@ function Cwalk(Dir){    //complete
 function panic(Dist){
     hp=Player.Hits();
     if(hp<70){
+
+        if(Threat!=3)
+            say("Threat=3")
+
         Orion.UseSkill('Hiding');
         Threat=3
         return
     }
+    if(Dist<3){
+        if(Player.Hidden()){
+            if(Threat!=3)
+                say("Threat=3")
+            Threat=3
+            while(Player.Stam!=Player.MaxStam){
+                if(!Player.Hidden()){
+                    if(Threat!=3)
+                        say("Threat=3")
+                    Threat=3
+                    return
+                }
+                Orion.Wait(200)
+            }
+            return
+        }
+        if(Threat!=4)
+                say("Threat=4")
+            Threat=4
+        Orion.UseSkill('Hiding');
+        return
+    }
     if(Dist<=10){
         if(Player.Hidden()){
+            if(Threat!=1)
+                say("Threat=1")
             Threat=1
             return
         }
-        Threat=2
-        Hid()
+        if(Threat!=3)
+            say("Threat=3")
+        Threat=3
+        Orion.UseSkill('Hiding');
         return
     }
     if(Dist>10){
+        if(Threat!=1)
+            say("Threat=1")
         Threat=1
         return
     }
     return
 }
 
+var threats_arr=[][4]
+function add_threats(mobs){
+    var newmob_found=true
+    say("threats_arr.length "+threats_arr.length)
+    say("mobs.length "+mobs.length)
+    if(threats_arr.length>=99){
+        threats_arr.length="overflowing with mobs"
+        say("Overflow v threats_arr")
+    }
+    for(m=0;m<mobs.length;m++){
+        for(t=0;t<threats_arr.length;t++){
+
+            if(mobs[m].Serial==threats_arr[t].Serial)
+                newmob_found=false
+
+        }
+        if(newmob_found){
+            threats_arr[threats_arr.length][0]=mobs[m].Name()
+            threats_arr[threats_arr.length][1]=mobs[m].Serial()
+            threats_arr[threats_arr.length][2]=mobs[m].Exists()
+            threats_arr[threats_arr.length][3]=new Date()
+        };
+            // {
+            //     Name:mobs[m].Name(),
+            //     Serial:mobs[m].Serial(),
+            //     Exists:mobs[m].Exists(),
+            //     date: new Date(),
+            // };
+            say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length].Name)
+            newmob_found=true
+    }
+    say("add_threats over")
+        
+}
+   
+
+
+function TxtWdw(){  //function TxtWdw(msg){  
+    for(i=0;i<threats_arr.length;i++)
+        TextWindow.Print(threats_arr[i])
+    if(!TextWindow.IsOpened()){
+        TextWindow.Open();
+    }
+}
+
 var Threat=0
 var kirilka_timer=new Date();
 function findmobs(){
-    var mob= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort(function(a,b){return a-b})[0];
-    if(mob){
-    	Orion.Print("uvidel "+ mob.Name()+", (dist "+mob.Distance()+")")
+    var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort(function(a,b){return a-b});
+    
+    if(mobs[0]){
+    	Orion.Print("uvidel "+ mobs[0].Name()+", (dist "+mobs[0].Distance()+")")
+        add_threats(mobs)
         //sbrosrudi()
-        panic(mob.Distance)
+        panic(mobs[0].Distance())
     }else{
-        Threat=0
+        if(Threat!=0)
+            say("Threat=0")
+            Threat=0
+        
     }
     
     if(new Date()-kirilka_timer>10000){
@@ -149,12 +231,12 @@ function sbrosrudi(){
 }
 
 function Hid(){
-	//if(!Player.Hidden()){
-    Orion.WarMode(1);
-    Orion.WarMode(0);
-    Orion.UseSkill('Hiding');
-    Orion.Wait(300);    //(3000)
-	//}
+	if(!Player.Hidden()){
+        Orion.WarMode(1);
+        Orion.WarMode(0);
+        Orion.UseSkill('Hiding');
+        Orion.Wait(3000);    //(3000)
+	}
 }
 
 function Magery(){
@@ -219,8 +301,8 @@ function Walk(Direction){
     }
     if(!moved)
         say("Шаг неудачен") //Ubrat'
-    else
-        Orion.Print("shagnul")
+    // else
+    //     Orion.Print("shagnul")
     Orion.SetTrack(false);
     return moved;
 }
@@ -242,21 +324,24 @@ function Obbegalka(Dir){    //vozvrashaet Direction
     /**Proveraem na obbeganie */
     if(Cwalk(DirCheck)){  
         Orion.SetTrack(true, Player.X()+xx[DirCheck]+xx[Reverse], Player.Y()+yy[DirCheck]+yy[Reverse]);
-        say("proveraem prepatstvije ... ->")
+        //say("proveraem prepatstvije ... ->")
         if(!Orion.CanWalk(Reverse,Player.X()+xx[DirCheck],Player.Y()+yy[DirCheck],Player.Z())){
             Dir=DirCheck; // Proverit;
-            say("If proiden")
-        }else{
-            say("else v  Obbegalke")
-        }
+        }else
     
+        findmobs();
         Walk(Dir);
-    }
+        return Dir  // <<<<< DOBAVIL SUDA RETURN???? POCHEMU NEBQLO SDES" RETURN ???
+        //PS
+        //Esli ne budet rabotat' pravel'no obbegalka
+        //na <<<---- LEVO
+    }   // UDAlit' etot RETURN
 
     /**Uzhe znaem shto mi chegoto obbegaem, proveraem, mozhem li mi idti vpered */
     while(!Cwalk(Dir)){  //Poka nemozhet idti v storonu Dir
         Dir=Dir+2*turnside<<29>>>29;
     }
+    findmobs();
     Walk(Dir);
     return Dir
 }
