@@ -125,7 +125,8 @@ function panic(Dist){
     return
 }
 
-var threats_arr=[][4]
+var threats_arr=[[],[4]];
+say("threats_arr.length[] "+threats_arr.length)
 function add_threats(mobs){
     var newmob_found=true
     say("threats_arr.length "+threats_arr.length)
@@ -137,11 +138,11 @@ function add_threats(mobs){
     for(m=0;m<mobs.length;m++){
         for(t=0;t<threats_arr.length;t++){
 
-            if(mobs[m].Serial==threats_arr[t].Serial)
+            if(mobs[m].Serial()==threats_arr[t].Serial)
                 newmob_found=false
 
         }
-        if(newmob_found){
+        if(newmob_found){   Line 145 Result of expression thrers_arr[threats_arr,length] [undefined]
             threats_arr[threats_arr.length][0]=mobs[m].Name()
             threats_arr[threats_arr.length][1]=mobs[m].Serial()
             threats_arr[threats_arr.length][2]=mobs[m].Exists()
