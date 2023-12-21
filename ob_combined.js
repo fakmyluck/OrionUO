@@ -125,7 +125,15 @@ function panic(Dist){
     return
 }
 
-var threats_arr=[[],[4]];
+var threats_arr=[];
+//     {
+//         "Name",
+//         "Serial",
+//         "Exists",
+//         "Date"
+//     }
+// ];
+
 say("threats_arr.length[] "+threats_arr.length)
 function add_threats(mobs){
     var newmob_found=true
@@ -143,18 +151,19 @@ function add_threats(mobs){
 
         }
         if(newmob_found){  // Line 145 Result of expression thrers_arr[threats_arr,length] [undefined]
-            threats_arr[threats_arr.length]=mobs[m].Name()
-            threats_arr[threats_arr.length]=mobs[m].Serial()
-            threats_arr[threats_arr.length]=mobs[m].Exists()
-            threats_arr[threats_arr.length]=new Date()
+            threats_arr.push({
+                Name: mobs[m].Name(),
+                Serial: mobs[m].Serial(),
+                Exists: mobs[m].Exists(),
+                Date: new Date()
+            })
+            TextWindow.Print(threats_arr[threats_arr.length-1].Name)
+            TextWindow.Print(threats_arr[threats_arr.length-1].Serial)
+            TextWindow.Print(threats_arr[threats_arr.length-1].Exists)
+            TextWindow.Print(threats_arr[threats_arr.length-1].Date+"\n")
         };
-            // {
-            //     Name:mobs[m].Name(),
-            //     Serial:mobs[m].Serial(),
-            //     Exists:mobs[m].Exists(),
-            //     date: new Date(),
-            // };
-            say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length].Name)
+        //say("threats_arr["+threats_arr.length+"]")//="+threats_arr[threats_arr.length].Name)
+            //say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length-1])
             newmob_found=true
     }
     say("add_threats over")
@@ -164,8 +173,8 @@ function add_threats(mobs){
 
 
 function TxtWdw(){  //function TxtWdw(msg){  
-    for(i=0;i<threats_arr.length;i++)
-        TextWindow.Print(threats_arr[i])
+    //for(i=0;i<threats_arr.length;i++)
+    //    TextWindow.Print(threats_arr[i])
     if(!TextWindow.IsOpened()){
         TextWindow.Open();
     }
