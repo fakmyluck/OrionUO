@@ -126,47 +126,52 @@ function panic(Dist){
 }
 
 var threats_arr=[];
-//     {
-//         "Name",
-//         "Serial",
-//         "Exists",
-//         "Date"
-//     }
-// ];
-
-say("threats_arr.length[] "+threats_arr.length)
 function add_threats(mobs){
     var newmob_found=true
-    say("threats_arr.length "+threats_arr.length)
-    say("mobs.length "+mobs.length)
+    const Now=new Date()
+    const time_to_delete_old=1000*60*30 //ms*sec*min
+
     if(threats_arr.length>=99){
-        threats_arr.length="overflowing with mobs"
         say("Overflow v threats_arr")
+        return
     }
     for(m=0;m<mobs.length;m++){
         for(t=0;t<threats_arr.length;t++){
-
-            if(mobs[m].Serial()==threats_arr[t].Serial)
+            if(mobs[m].Serial()===threats_arr[t].Serial){
                 newmob_found=false
-
+                threats_arr[t].lastSeen=Now
+            }
         }
         if(newmob_found){  // Line 145 Result of expression thrers_arr[threats_arr,length] [undefined]
-            threats_arr.push({
-                Name: mobs[m].Name(),
-                Serial: mobs[m].Serial(),
-                Exists: mobs[m].Exists(),
-                Date: new Date()
-            })
-            TextWindow.Print(threats_arr[threats_arr.length-1].Name)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Serial)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Exists)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Date+"\n")
-        };
+            var change_index=threats_arr.length
+            for(t=0;t<threats_arr.length;t++){
+                if(time_to_delete_old<Now-threats_arr[t].lastSeen){
+                    change_index=t
+                    break
+                }
+            }
+            // threats_arr.push({
+            //     Name: mobs[m].Name(),
+            //     Serial: mobs[m].Serial(),
+            //     Exists: mobs[m].Exists(),
+            //     lastSeen: new Date()
+            // })
+            threats_arr[change_index]={
+                "Name": mobs[m].Name(),
+                "Serial": mobs[m].Serial(),
+                "Exists": mobs[m].Exists(),
+                "lastSeen": Now             //Date
+            }
+            TextWindow.Print(threats_arr[change_index].Name)
+            TextWindow.Print(threats_arr[change_index].Serial)
+            TextWindow.Print(threats_arr[change_index].Exists)
+            TextWindow.Print(threats_arr[change_index].lastSeen+"\n")
+            return
+        }
         //say("threats_arr["+threats_arr.length+"]")//="+threats_arr[threats_arr.length].Name)
             //say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length-1])
             newmob_found=true
     }
-    say("add_threats over")
         
 }
    
