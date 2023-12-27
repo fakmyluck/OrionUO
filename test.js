@@ -73,7 +73,7 @@ function CwalkOrdinal(Dir){ //!!NB!! esli ordinal'no upersa v pramuju poverhnost
     if(Dir%2){  //Ordinal Direction
         if(L&&R){    //TUpIk                                
             cprint('Upersa v stenu (CwalkOrdinal)');                 //     ####
-            Newframe(rDir);
+            Newframe(Dir);
             return -1   //       @ # 
         }
         else if(L){  //esli slevo prepatstvie

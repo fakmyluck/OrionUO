@@ -2,7 +2,7 @@ var exit=false;
 //var Pdir=Player.Direction();
 const run=true;
 const walk=false;
-var walkdelay=415;
+const walkdelay=415;
 var debw=3000;
 var tmp=false;
 const turn_delay=50;    //proverit'
@@ -23,9 +23,9 @@ function say(text){
     //Orion.Wait(500)
 }
 
-var Bad_loc=[   [4206,4205,4204],//X
+const Bad_loc=[   [4206,4205,4204],//X
                 [602,602,602]]   //Y
-var Good_loc=[  [4181],[582]];
+const Good_loc=[  [4181],[582]];
 		//PRAVELN'no JA ZAPUTALSA EPT 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         

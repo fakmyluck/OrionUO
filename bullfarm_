@@ -1,0 +1,16 @@
+fn main(){
+    while(Dopustimiyves()){
+        var bull=createbullarray()//.ally//.enemy//.Serial ; name ; Dead ; exists ; lastSeen
+
+        while(bull.ally.length<2){
+
+        }
+        if("a">1){
+
+        }
+    }
+    prodazha()
+}
+fn Dopustimiyves(){
+    return MaxWeight-Weight>40
+}
