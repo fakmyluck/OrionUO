@@ -70,10 +70,9 @@ function Cwalk(Dir){    //complete
     return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
 
-function panic(Dist){
+function panic(tDist){
     hp=Player.Hits();
     if(hp<70){
-
         if(Threat!=3)
             say("Threat=3")
 
@@ -81,7 +80,7 @@ function panic(Dist){
         Threat=3
         return
     }
-    if(Dist<3){
+    if(tDist<3){
         if(Player.Hidden()){
             if(Threat!=3)
                 say("Threat=3")
@@ -103,7 +102,7 @@ function panic(Dist){
         Orion.UseSkill('Hiding');
         return
     }
-    if(Dist<=10){
+    if(tDist<=10){
         if(Player.Hidden()){
             if(Threat!=1)
                 say("Threat=1")
@@ -116,7 +115,7 @@ function panic(Dist){
         Orion.UseSkill('Hiding');
         return
     }
-    if(Dist>10){
+    if(tDist>10){
         if(Threat!=1)
             say("Threat=1")
         Threat=1
@@ -129,7 +128,7 @@ var threats_arr=[];
 function add_threats(mobs){
     var newmob_found=true
     const Now=new Date()
-    const time_to_delete_old=1000*60*30 //ms*sec*min
+    const time_to_delete_old=(1000*60)*30 //(ms*sec)*30min =30min
 
     if(threats_arr.length>=99){
         say("Overflow v threats_arr")
@@ -168,14 +167,9 @@ function add_threats(mobs){
             TextWindow.Print(threats_arr[change_index].lastSeen+"\n")
             return
         }
-        //say("threats_arr["+threats_arr.length+"]")//="+threats_arr[threats_arr.length].Name)
-            //say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length-1])
-            newmob_found=true
-    }
-        
+        newmob_found=true
+    } 
 }
-   
-
 
 function TxtWdw(){  //function TxtWdw(msg){  
     //for(i=0;i<threats_arr.length;i++)
@@ -191,15 +185,15 @@ function findmobs(){
     var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort(function(a,b){return a-b});
     
     if(mobs[0]){
-    	Orion.Print("uvidel "+ mobs[0].Name()+", (dist "+mobs[0].Distance()+")")
+    	Orion.Print("uvidel "+ mobs[0].Name()+" ("+mobs[0].Distance()+")")
         add_threats(mobs)
         //sbrosrudi()
         panic(mobs[0].Distance())
     }else{
-        if(Threat!=0)
+        if(Threat!=0){
             say("Threat=0")
             Threat=0
-        
+        }
     }
     
     if(new Date()-kirilka_timer>10000){
@@ -229,16 +223,16 @@ function sbrosrudi(){
     }
     
 	for(i=0;i<15;i++){
-	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
-	if (findItems0[0])
-	{
-		Orion.DragItem(findItems0[0]);
-		Orion.Wait('300');
-	}
-	else
-	break
-	Orion.DropDraggedItem('0x40370BE1');
-	Orion.Wait('500');
+        var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
+        if (findItems0[0])
+        {
+            Orion.DragItem(findItems0[0]);
+            Orion.Wait('300');
+        }
+        else
+        break
+        Orion.DropDraggedItem('0x40370BE1');
+        Orion.Wait('500');
 	}
 	findmobs()
 	Orion.WalkTo(4208, 606, 0);
