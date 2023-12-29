@@ -1,4 +1,4 @@
-fn main(){
+function main(){
     while(Dopustimiyves()){
         var bull=createbullarray()//.ally//.enemy//.Serial ; name ; Dead ; exists ; lastSeen
 
@@ -11,6 +11,12 @@ fn main(){
     }
     prodazha()
 }
-fn Dopustimiyves(){
+
+function createbullarray(){
+    mobiles=find_mobile_array()
+    
+    return bulls
+}
+function Dopustimiyves(){
     return MaxWeight-Weight>40
 }
