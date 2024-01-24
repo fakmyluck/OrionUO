@@ -2,7 +2,7 @@ var exit=false;
 //var Pdir=Player.Direction();
 const run=true;
 const walk=false;
-var walkdelay=415;
+const walkdelay=415;
 var debw=3000;
 var tmp=false;
 const turn_delay=50;    //proverit'
@@ -23,9 +23,9 @@ function say(text){
     //Orion.Wait(500)
 }
 
-var Bad_loc=[   [4206,4205,4204],//X
+const Bad_loc=[   [4206,4205,4204],//X
                 [602,602,602]]   //Y
-var Good_loc=[  [4181],[582]];
+const Good_loc=[  [4181],[582]];
 		//PRAVELN'no JA ZAPUTALSA EPT 
     //         7               -1                  -1      
     //      6  |  0         -1     0            0     -1         
@@ -70,10 +70,9 @@ function Cwalk(Dir){    //complete
     return Orion.CanWalk(Dir,Player.X(),Player.Y(),Player.Z())
 }
 
-function panic(Dist){
+function panic(tDist){
     hp=Player.Hits();
     if(hp<70){
-
         if(Threat!=3)
             say("Threat=3")
 
@@ -81,7 +80,7 @@ function panic(Dist){
         Threat=3
         return
     }
-    if(Dist<3){
+    if(tDist<3){
         if(Player.Hidden()){
             if(Threat!=3)
                 say("Threat=3")
@@ -103,7 +102,7 @@ function panic(Dist){
         Orion.UseSkill('Hiding');
         return
     }
-    if(Dist<=10){
+    if(tDist<=10){
         if(Player.Hidden()){
             if(Threat!=1)
                 say("Threat=1")
@@ -116,7 +115,7 @@ function panic(Dist){
         Orion.UseSkill('Hiding');
         return
     }
-    if(Dist>10){
+    if(tDist>10){
         if(Threat!=1)
             say("Threat=1")
         Threat=1
@@ -126,51 +125,51 @@ function panic(Dist){
 }
 
 var threats_arr=[];
-//     {
-//         "Name",
-//         "Serial",
-//         "Exists",
-//         "Date"
-//     }
-// ];
-
-say("threats_arr.length[] "+threats_arr.length)
 function add_threats(mobs){
     var newmob_found=true
-    say("threats_arr.length "+threats_arr.length)
-    say("mobs.length "+mobs.length)
+    const Now=new Date()
+    const time_to_delete_old=(1000*60)*30 //(ms*sec)*30min =30min
+
     if(threats_arr.length>=99){
-        threats_arr.length="overflowing with mobs"
         say("Overflow v threats_arr")
+        return
     }
     for(m=0;m<mobs.length;m++){
         for(t=0;t<threats_arr.length;t++){
-
-            if(mobs[m].Serial()==threats_arr[t].Serial)
+            if(mobs[m].Serial()===threats_arr[t].Serial){
                 newmob_found=false
-
+                threats_arr[t].lastSeen=Now
+            }
         }
         if(newmob_found){  // Line 145 Result of expression thrers_arr[threats_arr,length] [undefined]
-            threats_arr.push({
-                Name: mobs[m].Name(),
-                Serial: mobs[m].Serial(),
-                Exists: mobs[m].Exists(),
-                Date: new Date()
-            })
-            TextWindow.Print(threats_arr[threats_arr.length-1].Name)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Serial)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Exists)
-            TextWindow.Print(threats_arr[threats_arr.length-1].Date+"\n")
-        };
-        //say("threats_arr["+threats_arr.length+"]")//="+threats_arr[threats_arr.length].Name)
-            //say("threats_arr["+threats_arr.length+"]="+threats_arr[threats_arr.length-1])
-            newmob_found=true
-    }
-    say("add_threats over")
-        
+            var change_index=threats_arr.length
+            for(t=0;t<threats_arr.length;t++){
+                if(time_to_delete_old<Now-threats_arr[t].lastSeen){
+                    change_index=t
+                    break
+                }
+            }
+            // threats_arr.push({
+            //     Name: mobs[m].Name(),
+            //     Serial: mobs[m].Serial(),
+            //     Exists: mobs[m].Exists(),
+            //     lastSeen: new Date()
+            // })
+            threats_arr[change_index]={
+                "Name": mobs[m].Name(),
+                "Serial": mobs[m].Serial(),
+                "Exists": mobs[m].Exists(),
+                "lastSeen": Now             //Date
+            }
+            TextWindow.Print(threats_arr[change_index].Name)
+            TextWindow.Print(threats_arr[change_index].Serial)
+            TextWindow.Print(threats_arr[change_index].Exists)
+            TextWindow.Print(threats_arr[change_index].lastSeen+"\n")
+            return
+        }
+        newmob_found=true
+    } 
 }
-   
-
 
 function TxtWdw(){  //function TxtWdw(msg){  
     //for(i=0;i<threats_arr.length;i++)
@@ -186,15 +185,15 @@ function findmobs(){
     var mobs= Orion.FindTypeEx('any', 'any', 'ground','nothuman', 13).sort(function(a,b){return a-b});
     
     if(mobs[0]){
-    	Orion.Print("uvidel "+ mobs[0].Name()+", (dist "+mobs[0].Distance()+")")
+    	Orion.Print("uvidel "+ mobs[0].Name()+" ("+mobs[0].Distance()+")")
         add_threats(mobs)
         //sbrosrudi()
         panic(mobs[0].Distance())
     }else{
-        if(Threat!=0)
+        if(Threat!=0){
             say("Threat=0")
             Threat=0
-        
+        }
     }
     
     if(new Date()-kirilka_timer>10000){
@@ -224,16 +223,16 @@ function sbrosrudi(){
     }
     
 	for(i=0;i<15;i++){
-	var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
-	if (findItems0[0])
-	{
-		Orion.DragItem(findItems0[0]);
-		Orion.Wait('300');
-	}
-	else
-	break
-	Orion.DropDraggedItem('0x40370BE1');
-	Orion.Wait('500');
+        var findItems0 = Orion.FindType('0x19B9|0x19B7|0x19BA|0x19B8', '0xFFFF', 'backpack', 'item|fast');
+        if (findItems0[0])
+        {
+            Orion.DragItem(findItems0[0]);
+            Orion.Wait('300');
+        }
+        else
+        break
+        Orion.DropDraggedItem('0x40370BE1');
+        Orion.Wait('500');
 	}
 	findmobs()
 	Orion.WalkTo(4208, 606, 0);

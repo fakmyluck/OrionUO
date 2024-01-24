@@ -1,0 +1,38 @@
+function main(){
+    while(Dopustimiyves()){
+        var bull=createbullarray()//.ally//.enemy//.Serial ; name ; Dead ; exists ; lastSeen
+
+        while(bull.ally.length<2){
+
+        }
+        if("a">1){
+
+        }
+    }
+    prodazha()
+}
+
+function createbullarray(){
+    const bull_graphix="??????"
+    var ally=[]
+    var neutral=[]
+    mobiles=find_mobile_array()
+    for(i=0;i<mobiles.length;i++){
+        if(mobiles[i].graphic()===bull_graphix){
+            if(mobile[i].CanChangeName()){
+                var alen=ally.length
+                ally[alen].Serial=mobile[i].Serial()
+                ally[alen].Name=mobile[i].Name()
+            }else{
+                var nlen=neutral.length
+                neutral[nlen].Serial=mobile[i].Serial()
+                neutral[nlen].Name=mobile[i].Name()
+            }
+        }
+    }
+    return bulls
+}
+
+function Dopustimiyves(){
+    return MaxWeight-Weight>40
+}
