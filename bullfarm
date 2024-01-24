@@ -2,35 +2,90 @@ function main(){
     while(Dopustimiyves()){
         var bull=createbullarray()//.ally//.enemy//.Serial ; name ; Dead ; exists ; lastSeen
 
-        while(bull.ally.length<2){
-
+        while(bull.ally.length>0){
+            var closest=get_closestSerial(bull.neutral)
+            if(closest===-1){
+                Orion.Print('ERROR!')
+                break
+            }
+            find_and_kill(closest)
+            Orion.WalkTo(closest.X(),closest.Y(),closest.Z())
+            find_and_kill(closest)
+            tame(closest)
         }
         if("a">1){
 
         }
     }
+    
     prodazha()
+}
+
+var last_taming = 0
+function tame(tar){
+    Orion.UseSkill("Taming")
+    Orion.WaitTargetObject(e)
+    if(WaitForChatEvent("~You start taming~")){
+        last_taming = new Date()
+    }
+    if(WaitForChatEvent("~success~")){
+        return 1
+    }
+    SearchChatForEvent("~failed~")
+
+}
+
+// var lastt_chatmsg=0 //antyspam check
+function find_and_kill(neutrals){
+    // const now=new Date()
+    // if(now-lastt_chatmsg<15000){
+    //     return
+    // }
+    // lastt_chatmsg=now
+    Orion.Say("all kill")
+    // var e=get_closestSerial(neutrals)
+    // if(e===-1){
+    //     Orion.Print('ERROR!')
+    //     return
+    // }
+    Orion.WaitTargetObject(closest)
+}
+
+function get_closestSerial(obj){
+    if(obj.length==0){
+        return -1
+    }
+    var closest=Orion.GetDistance(obj[0].Serial)
+    for(i=1;i<obj.length;i++){
+        var tmp = Orion.GetDistance(obj[i].Serial)
+        if(obj[i].GetDistance>tmp){
+            closest=tmp
+        }
+    }
+    return closest.Serial
 }
 
 function createbullarray(){
     const bull_graphix="??????"
-    var ally=[]
-    var neutral=[]
+    var bull={
+        ally:       [],
+        neutral:    []
+    }
     mobiles=find_mobile_array()
     for(i=0;i<mobiles.length;i++){
         if(mobiles[i].graphic()===bull_graphix){
             if(mobile[i].CanChangeName()){
-                var alen=ally.length
-                ally[alen].Serial=mobile[i].Serial()
-                ally[alen].Name=mobile[i].Name()
+                var alen=bull.ally.length
+                bull.ally[alen].Serial=mobile[i].Serial()
+                bull.ally[alen].Name=mobile[i].Name()
             }else{
-                var nlen=neutral.length
-                neutral[nlen].Serial=mobile[i].Serial()
-                neutral[nlen].Name=mobile[i].Name()
+                var nlen=bull.neutral.length
+                bull.neutral[nlen].Serial=mobile[i].Serial()
+                bull.neutral[nlen].Name=mobile[i].Name()
             }
         }
     }
-    return bulls
+    return bull
 }
 
 function Dopustimiyves(){
